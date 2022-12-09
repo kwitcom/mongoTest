@@ -1,0 +1,107 @@
+{
+  "_id" : ObjectId("638a234cbcf438473b723653"),
+  "lastModifiedBy" : {
+    "name" : "PwC User",
+    "guid" : "pwcuser01",
+    "email" : "pwc.user@pwc.com"
+  },
+  "lastModifiedDateTime" : "2022-10-11T21:33:27.890Z",
+  "assetId" : "1575dbe4-df81-4801-89ae-7803abc00003",
+  "biToolAssetId" : "7b91484a-34f6-4a25-ae36-2721abc00003",
+  "name" : "Report 3",
+  "description" : "",
+  "assetType" : "POWERBI_REPORT",
+  "biType" : "POWERBI",
+  "workspaceId" : "361ef5ef-f9c4-46a9-aa5e-e939abc00001",
+  "thumbnailImagePath" : "",
+  "territoryCode" : "US",
+  "isReadOnly" : false,
+  "isVisible" : true,
+  "isShared" : true,
+  "shareLink" : "shareLink125",
+  "sharedToAllInternalRole" : "NONE",
+  "sharedToAllExternalContactsRole" : "NONE",
+  "accessList" : [
+    {
+      "email" : "user.2@pwc.com",
+      "type" : "USER",
+      "fullName" : "User 2",
+      "userType" : "INTERNAL",
+      "accessRole" : "REPORT_FULL",
+      "activationStatus" : "ACTIVE",
+      "lastUserAccessDate" : "2022-06-23T15:39:05.626Z",
+      "approvalTrackingId" : "",
+      "approvalStatus" : "APPROVED",
+      "createdBy" : {
+        "pwcGuid" : "wglasgow001",
+        "timestamp" : "2022-06-23T15:39:05.626Z"
+      },
+      "modifiedBy" : {
+        "pwcGuid" : "wglasgow001",
+        "timestamp" : "2022-06-23T15:39:05.626Z"
+      }
+    },
+    {
+      "email" : "tarunpreet.singh@pwc.com",
+      "type" : "USER",
+      "fullName" : "Tarunpreet Singh",
+      "userType" : "INTERNAL",
+      "accessRole" : "REPORT_FULL",
+      "activationStatus" : "ACTIVE",
+      "lastUserAccessDate" : "2022-06-23T15:39:05.626Z",
+      "approvalTrackingId" : "d3088ce0-4bc4-4674-a68e-7532a9b56b21",
+      "approvalStatus" : "APPROVED",
+      "createdBy" : {
+        "pwcGuid" : "wglasgow001",
+        "timestamp" : "2022-06-23T15:39:05.626Z"
+      },
+      "modifiedBy" : {
+        "pwcGuid" : "wglasgow001",
+        "timestamp" : "2022-06-23T15:39:05.626Z"
+      }
+    }
+  ],
+  "powerbiAssetDetails" : {
+    "dataset" : {
+      "id" : "43ae082f-42a5-4f4a-a799-0b3f67c9fdbf",
+      "datasetWorkspaceId" : "aed4d474-4327-4294-b275-db73f78b98d4",
+      "name" : "Report Tests",
+      "webUrl" : "https://app.powerbi.com/groups/aed4d474-4327-4294-b275-db73f78b98d4/datasets/43ae082f-42a5-4f4a-a799-0b3f67c9fdbf",
+      "addRowsAPIEnabled" : false,
+      "configuredBy" : "06dd5899-ebdf-4f4b-bbc6-d64ed64fda36",
+      "isRefreshable" : true,
+      "isEffectiveIdentityRequired" : false,
+      "isEffectiveIdentityRolesRequired" : false,
+      "isOnPremGatewayRequired" : true,
+      "targetStorageMode" : "Abf",
+      "createdDate" : "2022-04-05T18:16:47.367Z",
+      "createReportEmbedURL" : "https://app.powerbi.com/reportEmbed?config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVdFU1QtVVMtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJ1c2FnZU1ldHJpY3NWTmV4dCI6dHJ1ZX19",
+      "qnaEmbedURL" : "https://app.powerbi.com/qnaEmbed?config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVdFU1QtVVMtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJ1c2FnZU1ldHJpY3NWTmV4dCI6dHJ1ZX19",
+      "upstreamDatasets" : [
+
+      ],
+      "users" : [],
+      "dataSource" : {
+        "id" : "676968fa-37d1-4cde-9cda-8e90ca9c532b",
+        "gatewayId" : "f191b2af-0183-439f-a7ee-c39cf69ff041",
+        "datasourceType" : "Extension",
+        "connectionDetails" : "{\"extensionDataSourceKind\":\"Dremio\",\"extensionDataSourcePath\":\"fbc286e3-c545-4e80-8745-9882c896928e-us-dev-db.pwclabs.pwcglb.com\"}",
+        "credentialType" : "Basic",
+        "credentialDetails" : {
+          "privacyLevel" : "Private",
+          "useEndUserOAuth2Credentials" : false
+        },
+        "datasourceName" : "PwC Internal - PowerBITest - fbc286e3"
+      }
+    },
+    "webUrl" : "https://app.powerbi.com/groups/aed4d474-4327-4294-b275-db73f78b98d4/reports/5b54462c-d7a3-4d43-b54f-3c6231d7d4e4",
+    "embedUrl" : "https://app.powerbi.com/reportEmbed?reportId=5b54462c-d7a3-4d43-b54f-3c6231d7d4e4&groupId=aed4d474-4327-4294-b275-db73f78b98d4&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVdFU1QtVVMtcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJ1c2FnZU1ldHJpY3NWTmV4dCI6dHJ1ZX19",
+    "isRLSEnabled" : false,
+    "rlsRoles" : [
+      {
+        "roleName" : "PWC_VIEWER"
+      }
+    ]
+  },
+  "location" : "US"
+}

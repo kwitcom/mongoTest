@@ -1,0 +1,17 @@
+{
+  "_id" : ObjectId("638a5dbe3c9d28e8f4e649df"),
+  "groupType" : "EXTERNAL_CONTACTS",
+  "workspaceId" : "30757236-4294-4705-9923-c7afabc00101",
+  "members" : [
+    {
+      "email" : "bob@bofa.com",
+      "fullName" : "Bob Smith"
+    },
+    {
+      "email" : "joshua.wallace@bofa.com",
+      "fullName" : "Joshua Wallace"
+    }
+  ],
+  "created" : "2022-06-23T15:39:05.626Z",
+  "lastModified" : "2022-06-23T15:39:05.626Z"
+}

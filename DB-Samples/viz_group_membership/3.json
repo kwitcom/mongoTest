@@ -1,0 +1,17 @@
+{
+  "_id" : ObjectId("638f7c4fa1121958745aa777"),
+  "groupType" : "AAD",
+  "email" : "group.4@pwc.com",
+  "members" : [
+    {
+      "email" : "joshua.wallace@pwc.com",
+      "fullName" : "Joshua Wallace"
+    },
+    {
+      "email" : "bob.smith@pwc.com",
+      "fullName" : "Bob Smith"
+    }
+  ],
+  "created" : "2022-06-23T15:39:05.626Z",
+  "lastModified" : "2022-06-23T15:39:05.626Z"
+}

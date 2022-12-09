@@ -1,0 +1,70 @@
+{
+  "_id" : ObjectId("638a234cbcf438473b723652"),
+  "lastModifiedBy" : {
+    "name" : "PwC User",
+    "guid" : "pwcuser01",
+    "email" : "pwc.user@pwc.com"
+  },
+  "lastModifiedDateTime" : "2022-10-11T21:33:27.890Z",
+  "assetId" : "1575dbe4-df81-4801-89ae-7803abc00002",
+  "biToolAssetId" : "7b91484a-34f6-4a25-ae36-2721abc00002",
+  "name" Report 2",
+  "description" : "",
+  "assetType" : "TABLEAU_REPORT",
+  "biType" : "TABLEAU",
+  "workspaceId" : "361ef5ef-f9c4-46a9-aa5e-e939abc00002",
+  "thumbnailImagePath" : "",
+  "territoryCode" : "US",
+  "isReadOnly" : false,
+  "isVisible" : true,
+  "isShared" : true,
+  "shareLink" : "shareLink125",
+  "sharedToAllInternalRole" : "NONE",
+  "sharedToAllExternalContactsRole" : "NONE",
+  "accessList" : [
+    {
+      "email" : "tarunpreet.singh@pwc.com",
+      "type" : "USER",
+      "fullName" : "Tarunpreet Singh",
+      "userType" : "INTERNAL",
+      "accessRole" : "REPORT_FULL",
+      "activationStatus" : "ACTIVE",
+      "lastUserAccessDate" : "2022-06-23T15:39:05.626Z",
+      "approvalTrackingId" : "d3088ce0-4bc4-4674-a68e-7532a9b56b21",
+      "approvalStatus" : "PENDING",
+      "createdBy" : {
+        "pwcGuid" : "wglasgow001",
+        "timestamp" : "2022-06-23T15:39:05.626Z"
+      },
+      "modifiedBy" : {
+        "pwcGuid" : "wglasgow001",
+        "timestamp" : "2022-06-23T15:39:05.626Z"
+      }
+    }
+  ],
+  "tableauAssetDetails" : {
+    "project" : {
+      "id" : "0cf789d7-85f0-4cb9-8b44-99a9c275f8d7",
+      "name" : "Samples"
+    },
+    "owner" : {
+      "id" : "88e7b2c0-951d-4d76-a5f7-e94adb13e4a0",
+      "name" : "SA_Spotlight_STG"
+    },
+    "tags" : {
+      "name" : "tag1",
+      "description" : "tag1 description"
+    },
+    "dataAccelerationConfig" : {
+      "accelerationEnabled" : false
+    },
+    "contentUrl" : "BPWorldEnergy",
+    "webpageUrl" : "http://tbl-xdp-ue-stg.pwc.com/#/site/0-Demo/workbooks/6",
+    "size" : "1",
+    "encryptExtracts" : "false",
+    "siteId" : "0dca41f9-00ed-47b9-826a-cb651cee158b",
+    "defaultViewId" : "3aafa00b-6325-4d88-a29a-9cedd0dbba0d",
+    "isDisplayTabs" : true
+  },
+  "location" : "US"
+}

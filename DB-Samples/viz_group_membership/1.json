@@ -1,0 +1,17 @@
+{
+  "_id" : ObjectId("638f7c4fa1121958745aa771"),
+  "groupType" : "GOOGLE",
+  "email" : "group.2@pwc.com",
+  "members" : [
+    {
+      "email" : "joe@boa.com",
+      "fullName" : "Joe Smith"
+    },
+    {
+      "email" : "bob@boa.com",
+      "fullName" : "Bob Smith"
+    }
+  ],
+  "created" : "2022-06-23T15:39:05.626Z",
+  "lastModified" : "2022-06-23T15:39:05.626Z"
+}
