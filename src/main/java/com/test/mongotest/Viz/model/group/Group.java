@@ -1,7 +1,7 @@
-package com.test.mongotest.model.group;
+package com.test.mongotest.Viz.model.group;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.test.mongotest.model.Member;
+import com.test.mongotest.Viz.model.Member;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;

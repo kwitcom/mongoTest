@@ -1,9 +1,11 @@
 package com.test.mongotest.controller;
 
-import com.test.mongotest.model.group.Group;
-import com.test.mongotest.service.GroupService;
+import com.test.mongotest.Viz.model.group.Group;
+import com.test.mongotest.Viz.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/group")
@@ -25,9 +27,10 @@ public class GroupController {
         return groupService.getByEmail(email);
     }
 
-    @GetMapping("")
-    public Group getGroupByEmail(@RequestParam String email){
-        return groupService.getByEmail(email);
+    @GetMapping("/workspace/{workspaceId}")
+    public List<Group> getGroupsByWorkspaceIdAndGroupType(@PathVariable final String workspaceId, @RequestParam String groupType){
+        return groupService.getGroupsByWorkspaceIdAndGroupType(workspaceId, groupType);
     }
+
 
 }

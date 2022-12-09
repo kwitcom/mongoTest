@@ -1,6 +1,6 @@
-package com.test.mongotest.repository;
+package com.test.mongotest.Viz.repository;
 
-import com.test.mongotest.model.asset.AssetItem;
+import com.test.mongotest.Viz.model.asset.AssetItem;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

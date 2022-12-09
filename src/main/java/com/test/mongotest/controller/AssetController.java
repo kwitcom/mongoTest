@@ -1,7 +1,7 @@
 package com.test.mongotest.controller;
 
-import com.test.mongotest.model.asset.AssetItem;
-import com.test.mongotest.service.AssetService;
+import com.test.mongotest.Viz.model.asset.AssetItem;
+import com.test.mongotest.Viz.service.AssetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

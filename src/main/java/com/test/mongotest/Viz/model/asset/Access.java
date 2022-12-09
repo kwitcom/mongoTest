@@ -1,8 +1,8 @@
-package com.test.mongotest.model.asset;
+package com.test.mongotest.Viz.model.asset;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.test.mongotest.model.Member;
+import com.test.mongotest.Viz.model.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

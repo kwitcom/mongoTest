@@ -1,7 +1,7 @@
-package com.test.mongotest.service;
+package com.test.mongotest.Viz.service;
 
-import com.test.mongotest.model.group.Group;
-import com.test.mongotest.repository.GroupRepository;
+import com.test.mongotest.Viz.model.group.Group;
+import com.test.mongotest.Viz.repository.GroupRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class GroupService {
         }
     }
 
-    public List<Group> getGroupByWorkspaceIdAAndTAndGroupType(String workspaceId, String groupType){
-        return groupRepository.findGroupByWorkspaceIdAAndTAndGroupType(workspaceId,groupType);
+    public List<Group> getGroupsByWorkspaceIdAndGroupType(String workspaceId, String groupType){
+        return groupRepository.findGroupsByWorkspaceIdAndGroupType(workspaceId,groupType);
     }
 }

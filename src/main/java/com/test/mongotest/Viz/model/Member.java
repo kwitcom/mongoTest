@@ -1,4 +1,4 @@
-package com.test.mongotest.model;
+package com.test.mongotest.Viz.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

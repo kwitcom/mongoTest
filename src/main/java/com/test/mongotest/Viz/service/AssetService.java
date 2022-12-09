@@ -1,26 +1,22 @@
-package com.test.mongotest.service;
+package com.test.mongotest.Viz.service;
 
-import com.test.mongotest.model.asset.AssetItem;
-import com.test.mongotest.repository.AssetRepository;
+import com.test.mongotest.Viz.model.asset.AssetItem;
+import com.test.mongotest.Viz.repository.AssetRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
-public class AssetServiceImpl implements AssetService {
+public class AssetService {
 
     @Autowired
     private AssetRepository assetRepository;
 
-//    @Autowired
-//    private MongoTemplate mongoTemplate;
-
-
-    @Override
     public String save(AssetItem asset) {
         return assetRepository.save(asset).getAssetId();
     }
 
-    @Override
     public void delete(String id) {
         assetRepository.deleteById(id);
     }
