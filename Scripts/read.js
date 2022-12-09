@@ -6,6 +6,7 @@ const uri =
 const recordLimit = 500
 const databaseName = "glb-dev-workspaceservice"
 const collectName = "workspaces"
+const outputDetailRecords = false
 
 
 const client = new MongoClient(uri, {
@@ -21,18 +22,48 @@ async function run() {
     const collection = database.collection(collectName);
 
     const docs = await collection.find({}).limit(recordLimit).toArray();
+    const newItems = [];
 
     for (const doc of docs) {
-
       const findDoc = await collection.find({"_id":doc._id }).explain();
       findDoc.executionStats.executionStages.shards.forEach(item => {
         if (item.nReturned > 0) {
-          const stg = "doc._id: " + doc._id + " | doc.location: " + doc.location +  " | item.shardName: " + item.shardName;
-          console.log(stg);
-        }
+          const newItem = { id: doc._id , location: doc.location, shardName: item.shardName };
+          newItems.push(newItem);
 
+          if (outputDetailRecords){
+            console.log(newItem);
+          }
+        }
       });
     }
+
+    const counts = newItems.reduce((acc, item) => {
+      const location = item.location;
+      const shardName = item.shardName;
+
+      // create a nested object to store the counts for each group
+      if (!acc[location]) {
+        acc[location] = {};
+      }
+      if (!acc[location][shardName]) {
+        acc[location][shardName] = 0;
+      }
+
+      // increment the count for the group
+      acc[location][shardName]++;
+
+      return acc;
+    }, {});
+
+    // print the location, shardName, and count for each group
+    for (const location in counts) {
+      for (const shardName in counts[location]) {
+        console.log(`Location: ${location} Shard: ${shardName} Count: ${counts[location][shardName]}`);
+      }
+    }
+
+
   } finally {
     await client.close();
   }
