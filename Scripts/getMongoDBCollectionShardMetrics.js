@@ -2,7 +2,7 @@ const { MongoClient } = require("mongodb");
 const stream = require("stream");
 
 const uri =
-  "mongodb+srv://<username>:<password>@glb-dev.g6r6v.mongodb.net/?retryWrites=true&w=majority&tls=true&tlsInsecure=true";
+  "mongodb+srv://db_user_admin:ZK9Ncrs1dhzXwK85@glb-dev.g6r6v.mongodb.net/?retryWrites=true&w=majority&tls=true&tlsInsecure=true";
 const recordLimit = 500
 const databaseName = "glb-dev-workspaceservice"
 const collectName = "workspaces"
