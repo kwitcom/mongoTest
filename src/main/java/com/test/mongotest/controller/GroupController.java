@@ -32,5 +32,18 @@ public class GroupController {
         return groupService.getGroupsByWorkspaceIdAndGroupType(workspaceId, groupType);
     }
 
+    @PostMapping("/loadSamples")
+    public void loadSampleGroups(){
+        groupService.loadSampleData();
+    }
 
+    @GetMapping("/getAllGroups")
+    public List<Group> getAllGroups(){
+        return groupService.allGroups();
+    }
+
+    @GetMapping("/getRandomGroup")
+    public Group getRandomGroup(){
+        return groupService.getRandomGroup();
+    }
 }

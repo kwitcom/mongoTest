@@ -2,6 +2,7 @@ package com.test.mongotest.controller;
 
 import com.test.mongotest.Viz.model.asset.AssetItem;
 import com.test.mongotest.Viz.service.AssetService;
+import com.test.mongotest.model.WorkspaceIds;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -17,13 +18,15 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/asset")
-public class AssetController {
+@RequestMapping("/viz/asset")
+public class VizAssetController {
     @Autowired
     private AssetService assetService;
 
     @PostMapping
-    public String save(@RequestBody AssetItem asset) {return assetService.save(asset);}
+    public String save(@RequestBody AssetItem asset) {
+        return assetService.save(asset);
+    }
 
     @Operation(
             operationId = "getAssetsByUser",
@@ -36,7 +39,7 @@ public class AssetController {
     )
     @RequestMapping(
             method = RequestMethod.GET,
-            value = "/assets",
+            value = "/viz/assets",
             produces = {"application/json"}
     )
     ResponseEntity<List<AssetItem>> getAssetsByUser(
@@ -49,5 +52,14 @@ public class AssetController {
         throw new RuntimeException("Not Implemented");
     }
 
+    @PostMapping("/loadSamples")
+    public void loadSampleVizAssets() {
+        assetService.loadSampleData();
+    }
+
+    @PostMapping("/createIds")
+    public void createIds() {
+        WorkspaceIds.createIds();
+    }
 
 }

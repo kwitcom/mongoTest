@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-@Document(collection = "asset")
+@Document(collection = "viz_assets")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AssetItem {
 

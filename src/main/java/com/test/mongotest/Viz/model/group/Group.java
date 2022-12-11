@@ -11,12 +11,12 @@ import java.util.List;
 
 @Data
 @Builder
-@Document(collection = "group")
+@Document(collection = "groups")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Group {
     @Id
     private String _id;
-    private String groupId;
+//    private String groupId;
     private GroupType groupType;
     private String email;
     private String workspaceId;

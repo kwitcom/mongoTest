@@ -1,10 +1,6 @@
 package com.test.mongotest.Viz.model.asset;
-
 import lombok.AllArgsConstructor;
 
-/**
- * Access Roles supported
- */
 @AllArgsConstructor
 public enum AccessRole {
     NONE,
@@ -16,5 +12,3 @@ public enum AccessRole {
     VIEWER_EXPORT_UNDERLYING_DATA,
     VIEW_ONLY_EDITOR
 }
-
-
