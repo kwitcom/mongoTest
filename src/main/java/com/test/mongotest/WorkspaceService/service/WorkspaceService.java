@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -28,13 +29,13 @@ public class WorkspaceService {
     @Autowired
     private WorkspaceUserService workspaceUserService;
 
-    public List<Workspace> allWorkspaces(){
+    public List<Workspace> allWorkspaces() {
         return workspaceRepository.findAll();
     }
 
     public void loadSampleData() {
-        int batchSize = 100; // Number of records to generate and save per batch
-        int numBatches = 10; // Number of batches to generate and save
+        int batchSize = 30; // Number of records to generate and save per batch
+        int numBatches = 1; // Number of batches to generate and save
 
         for (int i = 0; i < numBatches; i++) {
             List<Workspace> workspaces = generateWorkspaces(batchSize);
@@ -43,58 +44,110 @@ public class WorkspaceService {
     }
 
     private List<Workspace> generateWorkspaces(int numRecords) {
+        // Initialize the list to store the generated Workspace objects
         List<Workspace> sampleData = new ArrayList<>();
+        // Generate the Workspace objects and add them to the list
+        IntStream.range(0, numRecords)
+                .parallel()
+                .forEach(i -> {
+                    Random random = new Random();
+                    String randomLocationIsoCode = Utilities.getRandomLocCode();
+                    //TODO Clean-up names Use different list of names for clients
+                    String workspaceName = Utilities.generateSampleDescription();
+                    String workspaceId = Utilities.generateRandomUUID();
+                    Date startDate = Utilities.generateStartDate();
+                    Date endDate = Utilities.generateEndDate(startDate);
+                    WorkspaceMetadata workspaceMetadata = WorkspaceMetadata.builder()
+                            .allowInternalSharing(true)
+                            .limitToWorkspaceOnly(false)
+                            .approval(false)
+                            .apptioId("xx000")
+                            .externalLimitData(false)
+                            .systemOnly(false)
+                            .wbsCode("15263")
+                            .externalLimitSharing(false)
+                            .domainLimitData(null)
+                            .domainLimitSharing(null)
+                            .searchable(true)
+                            .visibility(true)
+                            .build();
 
-        for (int i = 0; i < numRecords; i++) {
-            Random random = new Random();
-            String randomLocationIsoCode = Utilities.getRandomLocCode();
-            //TODO Clean-up names Use different list of names for clients
-            String workspaceName = Utilities.generateSampleDescription();
-            String workspaceId = Utilities.generateRandomUUID();
-            Date startDate = Utilities.generateStartDate();
-            Date endDate = Utilities.generateEndDate(startDate);
-            WorkspaceMetadata workspaceMetadata = WorkspaceMetadata.builder()
-                    .allowInternalSharing(true)
-                    .limitToWorkspaceOnly(false)
-                    .approval(false)
-                    .apptioId("xx000")
-                    .externalLimitData(false)
-                    .systemOnly(false)
-                    .wbsCode("15263")
-                    .externalLimitSharing(false)
-                    .domainLimitData(null)
-                    .domainLimitSharing(null)
-                    .searchable(true)
-                    .visibility(true)
-                    .build();
+                    List<WorkspaceUser> users = WorkspaceUserService.generateSampleWorkspaceUsers(random.nextInt(200) + 1);
 
-            List<WorkspaceUser> users = WorkspaceUserService.generateSampleWorkspaceUsers(random.nextInt(200) + 1);
-
-            Workspace workspace = Workspace.builder()
-                    .workspaceId(workspaceId)
-                    .country(WorkspaceCountry.builder().countryCode(randomLocationIsoCode).countryName(randomLocationIsoCode).build())
-                    .location(randomLocationIsoCode)
-                    .tags(Utilities.generateRandomTagList())
-                    .lineOfService(Utilities.selectRandomLineOfService())
-                    .originatingSite(Utilities.selectRandomOriginatingSite())
-                    .dataClassification(DataClassification.CONFIDENTIAL)
-                    .dataConsentLevel(DataConsentLevel.CLIENT_ONLY)
-                    .startDate(startDate)
-                    .endDate(endDate)
-                    .client(clientService.getRandomClient())
-                    .version("WS-2.0")
-                    .metadata(workspaceMetadata)
-                    .workspaceType(selectRandomWorkspaceType())
-                    .users(users)
-                    .workspaceName(workspaceName)
-                    .status(WorkspaceStatus.ACTIVE)
-                    .build();
-            sampleData.add(workspace);
-        }
+                    Workspace workspace = Workspace.builder()
+                            .workspaceId(workspaceId)
+                            .country(WorkspaceCountry.builder().countryCode(randomLocationIsoCode).countryName(randomLocationIsoCode).build())
+                            .location(randomLocationIsoCode)
+                            .tags(Utilities.generateRandomTagList())
+                            .lineOfService(Utilities.selectRandomLineOfService())
+                            .originatingSite(Utilities.selectRandomOriginatingSite())
+                            .dataClassification(DataClassification.CONFIDENTIAL)
+                            .dataConsentLevel(DataConsentLevel.CLIENT_ONLY)
+                            .startDate(startDate)
+                            .endDate(endDate)
+                            .client(clientService.getRandomClient())
+                            .version("WS-2.0")
+                            .metadata(workspaceMetadata)
+                            .workspaceType(selectRandomWorkspaceType())
+                            .users(users)
+                            .workspaceName(workspaceName)
+                            .status(WorkspaceStatus.ACTIVE)
+                            .build();
+                    sampleData.add(workspace);
+                });
         return sampleData;
     }
 
-    public Workspace getRandomWorkspace(){
+    //        List<Workspace> sampleData = new ArrayList<>();
+
+//        for (int i = 0; i < numRecords; i++) {
+//            Random random = new Random();
+//            String randomLocationIsoCode = Utilities.getRandomLocCode();
+//            //TODO Clean-up names Use different list of names for clients
+//            String workspaceName = Utilities.generateSampleDescription();
+//            String workspaceId = Utilities.generateRandomUUID();
+//            Date startDate = Utilities.generateStartDate();
+//            Date endDate = Utilities.generateEndDate(startDate);
+//            WorkspaceMetadata workspaceMetadata = WorkspaceMetadata.builder()
+//                    .allowInternalSharing(true)
+//                    .limitToWorkspaceOnly(false)
+//                    .approval(false)
+//                    .apptioId("xx000")
+//                    .externalLimitData(false)
+//                    .systemOnly(false)
+//                    .wbsCode("15263")
+//                    .externalLimitSharing(false)
+//                    .domainLimitData(null)
+//                    .domainLimitSharing(null)
+//                    .searchable(true)
+//                    .visibility(true)
+//                    .build();
+
+//            List<WorkspaceUser> users = WorkspaceUserService.generateSampleWorkspaceUsers(random.nextInt(200) + 1);
+
+//            Workspace workspace = Workspace.builder()
+//                    .workspaceId(workspaceId)
+//                    .country(WorkspaceCountry.builder().countryCode(randomLocationIsoCode).countryName(randomLocationIsoCode).build())
+//                    .location(randomLocationIsoCode)
+//                    .tags(Utilities.generateRandomTagList())
+//                    .lineOfService(Utilities.selectRandomLineOfService())
+//                    .originatingSite(Utilities.selectRandomOriginatingSite())
+//                    .dataClassification(DataClassification.CONFIDENTIAL)
+//                    .dataConsentLevel(DataConsentLevel.CLIENT_ONLY)
+//                    .startDate(startDate)
+//                    .endDate(endDate)
+//                    .client(clientService.getRandomClient())
+//                    .version("WS-2.0")
+//                    .metadata(workspaceMetadata)
+//                    .workspaceType(selectRandomWorkspaceType())
+//                    .users(users)
+//                    .workspaceName(workspaceName)
+//                    .status(WorkspaceStatus.ACTIVE)
+//                    .build();
+//            sampleData.add(workspace);
+//        }
+
+    public Workspace getRandomWorkspace() {
         Random random = new Random();
 
         // Use the GroupService instance to get all groups
@@ -109,7 +162,7 @@ public class WorkspaceService {
         return randomWorkspace;
     }
 
-    public static WorkspaceType selectRandomWorkspaceType(){
+    public static WorkspaceType selectRandomWorkspaceType() {
         Random random = new Random();
         WorkspaceType[] values = WorkspaceType.values();
         if (values.length == 0) {

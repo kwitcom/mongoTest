@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Slf4j
 @Service
 public class VizAssetService {
@@ -25,28 +22,23 @@ public class VizAssetService {
     private WorkspaceService workspaceService;
 
     public String save(AssetItem asset) {
-
         return assetRepository.save(asset).getAssetId();
     }
 
     public void delete(String id) {
-
         assetRepository.deleteById(id);
     }
 
     public void loadSampleData() {
         int batchSize = 30; // Number of records to generate and save per batch
-        int numBatches = 50; // Number of batches to generate and save
+        int numBatches = 1; // Number of batches to generate and save
 
         for (int i = 0; i < numBatches; i++) {
-            List<AssetItem> sampleData = generateSampleData(batchSize);
-            mongoTemplate.insertAll(sampleData);
+            generateSampleData(batchSize);
         }
     }
 
-    private List<AssetItem> generateSampleData(int numRecords) {
-        List<AssetItem> sampleData = new ArrayList<>();
-
+    private void generateSampleData(int numRecords) {
         for (int i = 0; i < numRecords; i++) {
             String randomLocationIsoCode = Utilities.getRandomLocCode();
             String description = Utilities.generateSampleDescription();
@@ -66,8 +58,7 @@ public class VizAssetService {
                     .externalContactsShareAccessRole(com.test.mongotest.Viz.utils.Utilities.selectRandomAccessRole())
                     .accessList(com.test.mongotest.Viz.utils.Utilities.generateSampleAccessList())
                     .build();
-            sampleData.add(asset);
+            this.save(asset);
         }
-        return sampleData;
     }
 }
