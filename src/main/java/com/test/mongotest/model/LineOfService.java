@@ -1,4 +1,4 @@
-package com.test.mongotest.WorkspaceService.model;
+package com.test.mongotest.model;
 
 public enum LineOfService {
     ADVISORY,

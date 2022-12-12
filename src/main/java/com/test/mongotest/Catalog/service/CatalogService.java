@@ -1,7 +1,8 @@
 package com.test.mongotest.Catalog.service;
 
 import com.test.mongotest.Catalog.model.CatalogAsset;
-import com.test.mongotest.model.WorkspaceIds;
+import com.test.mongotest.WorkspaceService.model.Workspace;
+import com.test.mongotest.WorkspaceService.service.WorkspaceService;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +18,25 @@ public class CatalogService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private WorkspaceService workspaceService;
+
     public void createAndSaveCatalogAsset(CatalogAsset catalogAsset) {
         mongoTemplate.insert(catalogAsset);
     }
 
     public void loadSampleWorkspace() {
         List<CatalogAsset> sampleData = new ArrayList<>();
+        List<Workspace> workspaceList = workspaceService.allWorkspaces();
 
-        List<String> workspaceList = WorkspaceIds.Ids;
-
-        workspaceList.forEach(id -> {
-            String loc = Utilities.getRandomLocCode();
+        workspaceList.forEach(ws -> {
             CatalogAsset asset = CatalogAsset.builder()
-                    .qualifiedName("https://workbench-us.pwclabs.pwcglb.com/" + id + "/")
-                    .AssetId(id)
-                    .name("Workspace Name: " + id)
-                    .location(loc)
-                    .territory(loc)
-                    .description("Workspace : " + id)
+                    .qualifiedName("https://workbench-us.pwclabs.pwcglb.com/" + ws.getWorkspaceId() + "/")
+                    .AssetId(ws.getWorkspaceId() )
+                    .name(ws.getWorkspaceName())
+                    .location(ws.getLocation())
+                    .territory(ws.getLocation())
+                    .description(ws.getWorkspaceName())
                     .resourceStatus("AVAILABLE")
                     .searchable(Utilities.generateRandomBoolean())
                     .build();

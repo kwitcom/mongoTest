@@ -1,8 +1,8 @@
 package com.test.mongotest.controller;
 
 import com.test.mongotest.Viz.model.asset.AssetItem;
-import com.test.mongotest.Viz.service.AssetService;
-import com.test.mongotest.model.WorkspaceIds;
+import com.test.mongotest.Viz.service.VizAssetService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -21,11 +21,11 @@ import java.util.Optional;
 @RequestMapping("/viz/asset")
 public class VizAssetController {
     @Autowired
-    private AssetService assetService;
+    private VizAssetService vizAssetService;
 
     @PostMapping
     public String save(@RequestBody AssetItem asset) {
-        return assetService.save(asset);
+        return vizAssetService.save(asset);
     }
 
     @Operation(
@@ -52,14 +52,6 @@ public class VizAssetController {
         throw new RuntimeException("Not Implemented");
     }
 
-    @PostMapping("/loadSamples")
-    public void loadSampleVizAssets() {
-        assetService.loadSampleData();
-    }
 
-    @PostMapping("/createIds")
-    public void createIds() {
-        WorkspaceIds.createIds();
-    }
 
 }

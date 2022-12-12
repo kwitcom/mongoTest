@@ -2,6 +2,11 @@ package com.test.mongotest.utils;
 
 import com.test.mongotest.model.*;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -11,6 +16,32 @@ public class Utilities {
     private static LocationCodes loc;
     private static WordList words;
     private static PwCTags pwCTags;
+    private static LineOfService lineOfService;
+
+    public static OriginatingSite selectRandomOriginatingSite(){
+        Random random = new Random();
+        // Create a list of all the possible LineOfService values
+        OriginatingSite[] values = OriginatingSite.values();
+        // Check if the list of values is empty
+        if (values.length == 0) {
+            // If the list is empty, throw an exception
+            throw new IllegalArgumentException("The list of values cannot be empty");
+        }
+        int index = random.nextInt(values.length);
+        return values[index];
+    }
+    public static LineOfService selectRandomLineOfService(){
+        Random random = new Random();
+        // Create a list of all the possible LineOfService values
+        LineOfService[] values = LineOfService.values();
+        // Check if the list of values is empty
+        if (values.length == 0) {
+            // If the list is empty, throw an exception
+            throw new IllegalArgumentException("The list of values cannot be empty");
+        }
+        int index = random.nextInt(values.length);
+        return values[index];
+    }
 
     public static String getRandomLocCode(){
         Random random = new Random();
@@ -97,15 +128,59 @@ public class Utilities {
         return emailAddress;
     }
 
-    public static String selectRandomWorkspaceId(){
-        // Create a new Random instance
+    public static String generateRandomClientName(){
+        String clientName = "";
+        Random random = new Random();
+        // Create a list of possible names to choose from
+        String[] names = {"Alice", "Bob", "Charlie", "David", "Emily", "Frank", "Grace", "Henry"};
+        int index = random.nextInt(names.length);
+        clientName = names[index];
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        int indexLetter = random.nextInt(alphabet.length());
+        clientName = clientName + alphabet.substring(indexLetter);
+
+        return clientName;
+    }
+    public static Date generateStartDate() {
         Random random = new Random();
 
-        // Select a random index from the list of domains
-        int index = random.nextInt(WorkspaceIds.Ids.size());
+        // Generate random year, month, and day for start date
+        int startYear = 1970 + random.nextInt(50); // 1970-2019
+        int startMonth = random.nextInt(12) + 1; // 1-12
+        int startDay = random.nextInt(28) + 1; // 1-28
 
-        // Get the domain at the selected index
-        String workspaceId = WorkspaceIds.Ids.get(index);
-        return workspaceId;
+        // Create start date using random year, month, and day
+        LocalDate startDate = LocalDate.of(startYear, startMonth, startDay);
+        // Convert LocalDate to Instant
+        Instant instant = startDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+        // Convert Instant to ZonedDateTime in UTC time zone
+        ZonedDateTime zonedDateTime = instant.atZone(ZoneOffset.UTC);
+        // Convert ZonedDateTime to Date
+        Date date = Date.from(zonedDateTime.toInstant());
+        return date;
     }
+
+    public static Date generateEndDate(Date startdate) {
+        Random random = new Random();
+
+        // Convert startdate to ZonedDateTime in UTC time zone
+        ZonedDateTime zonedStartDateTime = startdate.toInstant().atZone(ZoneOffset.UTC);
+
+        // Generate random year, month, and day for end date
+        int endYear = zonedStartDateTime.getYear() + random.nextInt(5); // startYear-startYear+4
+        int endMonth = random.nextInt(12) + 1; // 1-12
+        int endDay = random.nextInt(28) + 1; // 1-28
+
+        // Create end date using random year, month, and day
+        LocalDate endDate = LocalDate.of(endYear, endMonth, endDay);
+        // Convert LocalDate to Instant
+        Instant instant = endDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+        // Convert Instant to ZonedDateTime in UTC time zone
+        ZonedDateTime zonedEndDateTime = instant.atZone(ZoneOffset.UTC);
+        // Convert ZonedDateTime to Date
+        Date date = Date.from(zonedEndDateTime.toInstant());
+        return date;
+    }
+
+
 }

@@ -48,7 +48,7 @@ public class GroupService {
 
     public void loadSampleData() {
         int batchSize = 100; // Number of records to generate and save per batch
-        int numBatches = 5; // Number of batches to generate and save
+        int numBatches = 20; // Number of batches to generate and save
 
         for (int i = 0; i < numBatches; i++) {
             List<Group> googleSample = generateSampleGroupMembership(batchSize, GroupType.GOOGLE);

@@ -2,6 +2,7 @@ package com.test.mongotest.Viz.service;
 
 import com.test.mongotest.Viz.model.asset.AssetItem;
 import com.test.mongotest.Viz.repository.AssetRepository;
+import com.test.mongotest.WorkspaceService.service.WorkspaceService;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,15 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class AssetService {
+public class VizAssetService {
 
     @Autowired
     private AssetRepository assetRepository;
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private WorkspaceService workspaceService;
 
     public String save(AssetItem asset) {
 
@@ -31,8 +35,8 @@ public class AssetService {
     }
 
     public void loadSampleData() {
-        int batchSize = 100; // Number of records to generate and save per batch
-        int numBatches = 5; // Number of batches to generate and save
+        int batchSize = 30; // Number of records to generate and save per batch
+        int numBatches = 50; // Number of batches to generate and save
 
         for (int i = 0; i < numBatches; i++) {
             List<AssetItem> sampleData = generateSampleData(batchSize);
@@ -56,7 +60,7 @@ public class AssetService {
                     .biToolAssetId(Utilities.generateRandomUUID())
                     .isShared(Utilities.generateRandomBoolean())
                     .isVisible(Utilities.generateRandomBoolean())
-                    .workspaceId(Utilities.selectRandomWorkspaceId())
+                    .workspaceId(workspaceService.getRandomWorkspace().getWorkspaceId())
                     .assetType(com.test.mongotest.Viz.utils.Utilities.selectAssetType())
                     .sharedToAllInternalRole(com.test.mongotest.Viz.utils.Utilities.selectRandomAccessRole())
                     .externalContactsShareAccessRole(com.test.mongotest.Viz.utils.Utilities.selectRandomAccessRole())
