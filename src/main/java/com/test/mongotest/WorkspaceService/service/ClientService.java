@@ -22,14 +22,12 @@ public class ClientService {
     public List<WorkspaceClient> allClients(){
         return clientRepository.findAll();
     }
-    public void loadSampleData() {
-        int batchSize = 100; // Number of records to generate and save per batch
-        int numBatches = 10; // Number of batches to generate and save
-
+    public void loadSampleData(Integer batchSize, Integer numBatches) {
         for (int i = 0; i < numBatches; i++) {
             generateSampleData(batchSize);
         }
     }
+
 
     private void generateSampleData(int numRecords) {
         for (int i = 0; i < numRecords; i++) {

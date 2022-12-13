@@ -3,8 +3,10 @@ package com.test.mongotest.Viz.model.asset;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Sharded;
 
 import java.util.List;
@@ -13,9 +15,9 @@ import java.util.List;
 @Builder
 @Document(collection = "viz_assets")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Sharded(shardKey = {"location","assetId"})
+@Sharded(shardKey = {"assetId"})
 public class AssetItem {
-    @Indexed
+    @Indexed(name="test_index", direction = IndexDirection.DESCENDING, unique = true, background = true)
     private String assetId;
     @Indexed
     private String biToolAssetId;
@@ -33,6 +35,7 @@ public class AssetItem {
     private String shareLink;
     private AccessRole sharedToAllInternalRole;
     private AccessRole externalContactsShareAccessRole;
+    @Field
     private List<Access> accessList;
 
 }

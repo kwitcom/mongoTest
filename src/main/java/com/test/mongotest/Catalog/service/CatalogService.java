@@ -50,10 +50,7 @@ public class CatalogService {
 
     }
 
-    public void loadSampleData() {
-        int batchSize = 100; // Number of records to generate and save per batch
-        int numBatches = 10; // Number of batches to generate and save
-
+    public void loadSampleData(Integer batchSize, Integer numBatches) {
         for (int i = 0; i < numBatches; i++) {
             generateSampleData(batchSize);
         }

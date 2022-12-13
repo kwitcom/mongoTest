@@ -26,12 +26,12 @@ public class Admin {
 
     @PostMapping("/loadSamples")
     public void loadSampleVizAssets() {
-//        clientService.loadSampleData();
-//        workspaceService.loadSampleData();
-//        catalogService.loadSampleWorkspace();
-//        groupService.loadSampleData();
-        vizAssetService.loadSampleData();
-//        catalogService.loadSampleData();
+        clientService.loadSampleData(10, 1);
+        workspaceService.loadSampleData(10, 1);
+        catalogService.loadSampleWorkspace();
+        groupService.loadSampleData(10,1);
+        vizAssetService.loadSampleData(10, 1);
+        catalogService.loadSampleData(10,1);
     }
 
 }

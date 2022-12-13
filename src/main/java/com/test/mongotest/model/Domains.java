@@ -17,7 +17,24 @@ public class Domains {
                 "bofa.com",
                 "hotmail.com",
                 "wxfy.org",
-                "kg-exs.net"
+                "kg-exs.net",
+                "adventuretime.com",
+                "fantasticjourney.com",
+                "mysteriousisland.com",
+                "legendofzelda.com",
+                "thelastairbender.com",
+                "thelittlemermaid.com",
+                "theincredibles.com",
+                "aladdin.com",
+                "thelionking.com",
+                "brave.com",
+                "frozen.com",
+                "cinderella.com",
+                "tangled.com",
+                "moana.com",
+                "theprincessandthefrog.com",
+                "beautyandthebeast.com",
+                "aliceinwonderland.com"
 
         );
     }
