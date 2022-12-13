@@ -1,14 +1,16 @@
 package com.test.mongotest.controller;
 
 import com.test.mongotest.Catalog.service.CatalogService;
-import com.test.mongotest.Viz.service.VizAssetService;
+import com.test.mongotest.Viz.model.asset.MainObject;
 import com.test.mongotest.Viz.service.GroupService;
+import com.test.mongotest.Viz.service.MainService;
+import com.test.mongotest.Viz.service.VizAssetService;
 import com.test.mongotest.WorkspaceService.service.ClientService;
 import com.test.mongotest.WorkspaceService.service.WorkspaceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -23,15 +25,23 @@ public class Admin {
     private GroupService groupService;
     @Autowired
     private VizAssetService vizAssetService;
+    @Autowired
+    private MainService mainService;
+
 
     @PostMapping("/loadSamples")
     public void loadSampleVizAssets() {
-        clientService.loadSampleData(10, 1);
-        workspaceService.loadSampleData(10, 1);
-        catalogService.loadSampleWorkspace();
-        groupService.loadSampleData(10,1);
+//        mainService.loadSampleData(10, 1);
+//        clientService.loadSampleData(10, 1);
+//        workspaceService.loadSampleData(10, 1);
+//        catalogService.loadSampleWorkspace();
+//        groupService.loadSampleData(10,1);
         vizAssetService.loadSampleData(10, 1);
-        catalogService.loadSampleData(10,1);
+//        catalogService.loadSampleData(10,1);
     }
 
+    @GetMapping("/{id}")
+    List<MainObject> getAssetById(@PathVariable final String id){
+        return mainService.findByEmail(id);
+    }
 }

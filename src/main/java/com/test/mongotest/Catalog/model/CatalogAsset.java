@@ -19,7 +19,6 @@ public class CatalogAsset {
 
     @Indexed
     private String qualifiedName;
-    @Indexed
     private String AssetId;
     private String name;
     private String description;

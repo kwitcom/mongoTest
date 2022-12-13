@@ -8,6 +8,7 @@ import com.test.mongotest.model.WordList;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,29 @@ public class VizAssetService {
     private AssetRepository assetRepository;
     @Autowired
     private MongoTemplate mongoTemplate;
-
+    @Autowired
+    private MongoOperations mongoOperations;
     @Autowired
     private WorkspaceService workspaceService;
+
+
+    public void setupDB() {
+//        //MongoDatabase adminDB = mongoOperations.getCollection("admin").getMongoDbFactory().getMongoDatabase("admin");
+//        MongoDatabase adminDB = mongoTemplate.getDb("admin");
+//
+//        // Check if sharding is enabled on the "glb-dev-test" database
+//        Document shardingState = adminDB.runCommand(new Document("sh.status()", 1));
+//
+//        if (!shardingState.getBoolean("enabled")) {
+//            // Enable sharding on the "glb-dev-test" database
+//            adminDB.runCommand(new Document("enableSharding", "glb-dev-test"));
+//
+//            // Shard the "viz_assets" collection
+//            Document shardCmd = new Document("shardCollection", "glb-dev-test.viz_assets")
+//                    .append("key", new Document("location", 1).append("assetId", 1));
+//            adminDB.runCommand(shardCmd);
+//        }
+    }
 
     public String save(AssetItem asset) {
         return assetRepository.save(asset).getAssetId();
@@ -31,10 +52,6 @@ public class VizAssetService {
 
     public void delete(String id) {
         assetRepository.deleteById(id);
-    }
-
-    public List<AssetItem> getAssetsByEmail(String email) {
-        return assetRepository.findByEmail(email);
     }
 
     public void loadSampleData(Integer batchSize, Integer numBatches) {
@@ -64,5 +81,14 @@ public class VizAssetService {
                     .build();
             assetRepository.save(asset);
         }
+    }
+
+    public AssetItem findAssetItemByAssetId(String assetId) {
+        return assetRepository.findAssetItemByAssetId(assetId);
+    }
+
+
+    public List<AssetItem> findByEmail(String email) {
+        return assetRepository.findByAccessListEmail(email);
     }
 }

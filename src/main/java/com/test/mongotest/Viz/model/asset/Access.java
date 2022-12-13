@@ -1,23 +1,20 @@
 package com.test.mongotest.Viz.model.asset;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.Instant;
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Document()
 public class Access {
-    @Indexed
+    @Field
     private String email;
     private String type;
     private String fullName;
@@ -28,5 +25,6 @@ public class Access {
     private Object approvalTrackingId;
     @Indexed
     private ApprovalStatus approvalStatus;
+    @Field
     private List<AccessVia> accessVia;
 }

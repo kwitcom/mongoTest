@@ -32,10 +32,10 @@ public class CatalogService {
 
         List<Workspace> workspaceList = workspaceService.allWorkspaces();
 
-        workspaceList.forEach(ws -> {
+        workspaceList.parallelStream().forEach(ws -> {
             CatalogAsset asset = CatalogAsset.builder()
                     .qualifiedName("https://workbench-us.pwclabs.pwcglb.com/" + ws.getWorkspaceId() + "/")
-                    .AssetId(ws.getWorkspaceId() )
+                    .AssetId(ws.getWorkspaceId())
                     .name(ws.getWorkspaceName())
                     .location(ws.getLocation())
                     .territory(ws.getLocation())
@@ -47,8 +47,8 @@ public class CatalogService {
                     .build();
             catalogAssetRepository.save(asset);
         });
-
     }
+
 
     public void loadSampleData(Integer batchSize, Integer numBatches) {
         for (int i = 0; i < numBatches; i++) {

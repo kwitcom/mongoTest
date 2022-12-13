@@ -2,11 +2,13 @@ package com.test.mongotest.controller;
 
 import com.test.mongotest.Viz.model.asset.AssetItem;
 import com.test.mongotest.Viz.service.VizAssetService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/viz/asset")
@@ -20,13 +22,16 @@ public class VizAssetController {
     }
 
 
-//    @GetMapping("")
-//    List<AssetItem> getAssetsByUser(
-//            @Parameter(name = "userEmail", description = "Email Address", in = ParameterIn.QUERY) Optional<String> userEmail
-//    ) {
-//        return vizAssetService.getAssetsByEmail(String.valueOf(userEmail));
-//    }
+    @GetMapping("")
+    List<AssetItem> getAssetsByUser(
+            @Parameter(name = "userEmail", description = "Email Address", in = ParameterIn.QUERY) Optional<String> userEmail
+    ) {
+        return vizAssetService.findByEmail(String.valueOf(userEmail));
+    }
 
-
+    @GetMapping("/{assetId}")
+    AssetItem getAssetById(@PathVariable final String assetId){
+        return vizAssetService.findAssetItemByAssetId(assetId);
+    }
 
 }

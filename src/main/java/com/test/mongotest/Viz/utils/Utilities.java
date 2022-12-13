@@ -1,10 +1,7 @@
 package com.test.mongotest.Viz.utils;
 
 import com.test.mongotest.Viz.model.Member;
-import com.test.mongotest.Viz.model.asset.Access;
-import com.test.mongotest.Viz.model.asset.AccessRole;
-import com.test.mongotest.Viz.model.asset.ApprovalStatus;
-import com.test.mongotest.Viz.model.asset.AssetType;
+import com.test.mongotest.Viz.model.asset.*;
 import com.test.mongotest.Viz.model.group.GroupType;
 import com.test.mongotest.Viz.service.GroupService;
 import com.test.mongotest.model.Domains;
@@ -18,7 +15,7 @@ public class Utilities {
     private static GroupService groupService;
 
     public static List<Access> generateSampleAccessList() {
-        List<Access> accessList = new ArrayList<>();
+        List<Access>  accessList = new ArrayList<>();
         // Create a Random object to generate random numbers
         Random random = new Random();
 

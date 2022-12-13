@@ -1,8 +1,8 @@
 package com.test.mongotest.Viz.repository;
 
+import com.test.mongotest.Viz.model.asset.Access;
 import com.test.mongotest.Viz.model.asset.AssetItem;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,7 +13,10 @@ public interface AssetRepository extends MongoRepository<AssetItem, String> {
     AssetItem findAssetItemByAssetId(String assetId);
     public long count();
 
-    @Query("{ 'accessList.email': ?0 }")
-    public List<AssetItem> findByEmail(String email);
+    List<AssetItem> findByAccessList(List<Access> accessList);
+
+//    List<AssetItem> findByAccessListEmail(String email);
+    List<AssetItem> findByAccessListEmail(String email);
+
 
 }
