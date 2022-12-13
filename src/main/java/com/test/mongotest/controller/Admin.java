@@ -7,8 +7,13 @@ import com.test.mongotest.Viz.service.MainService;
 import com.test.mongotest.Viz.service.VizAssetService;
 import com.test.mongotest.WorkspaceService.service.ClientService;
 import com.test.mongotest.WorkspaceService.service.WorkspaceService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -40,8 +45,11 @@ public class Admin {
 //        catalogService.loadSampleData(10,1);
     }
 
-    @GetMapping("/{id}")
-    List<MainObject> getAssetById(@PathVariable final String id){
-        return mainService.findByEmail(id);
+    @GetMapping("/")
+    List<MainObject> getAssetByEmail(
+            @Parameter(name = "userEmail",
+            description = "Email Address",
+            in = ParameterIn.QUERY) String userEmail) {
+        return mainService.findByEmail(userEmail);
     }
 }
