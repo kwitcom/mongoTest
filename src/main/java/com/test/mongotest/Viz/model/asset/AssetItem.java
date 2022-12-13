@@ -13,9 +13,8 @@ import java.util.List;
 @Builder
 @Document(collection = "viz_assets")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Sharded("assetId")
+@Sharded(shardKey = {"location","assetId"})
 public class AssetItem {
-
     @Indexed
     private String assetId;
     @Indexed
@@ -24,20 +23,15 @@ public class AssetItem {
     private String name;
     private String location;
     private String description;
-
     private AssetType assetType;
-
     private String biType;
     private String workspaceId;
     private String thumbnailImagePath;
     private Boolean isReadOnly;
     private Boolean isVisible;
     private Boolean isShared;
-
     private String shareLink;
-
     private AccessRole sharedToAllInternalRole;
-
     private AccessRole externalContactsShareAccessRole;
     private List<Access> accessList;
 

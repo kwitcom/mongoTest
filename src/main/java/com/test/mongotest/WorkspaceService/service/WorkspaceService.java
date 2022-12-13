@@ -2,14 +2,15 @@ package com.test.mongotest.WorkspaceService.service;
 
 import com.test.mongotest.WorkspaceService.model.*;
 import com.test.mongotest.WorkspaceService.repository.WorkspaceRepository;
+import com.test.mongotest.model.LocationCodes;
+import com.test.mongotest.model.WorkspaceNameSamples;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -35,28 +36,24 @@ public class WorkspaceService {
 
     public void loadSampleData() {
         int batchSize = 30; // Number of records to generate and save per batch
-        int numBatches = 1; // Number of batches to generate and save
+        int numBatches = 10; // Number of batches to generate and save
 
         for (int i = 0; i < numBatches; i++) {
-            List<Workspace> workspaces = generateWorkspaces(batchSize);
-            mongoTemplate.insertAll(workspaces);
+            generateWorkspaces(batchSize);
         }
     }
 
-    private List<Workspace> generateWorkspaces(int numRecords) {
-        // Initialize the list to store the generated Workspace objects
-        List<Workspace> sampleData = new ArrayList<>();
+    private void generateWorkspaces(int numRecords) {
         // Generate the Workspace objects and add them to the list
         IntStream.range(0, numRecords)
                 .parallel()
                 .forEach(i -> {
                     Random random = new Random();
-                    String randomLocationIsoCode = Utilities.getRandomLocCode();
-                    //TODO Clean-up names Use different list of names for clients
-                    String workspaceName = Utilities.generateSampleDescription();
+                    String randomLocationIsoCode = LocationCodes.getRandomLocCode();
+                    String workspaceName = WorkspaceNameSamples.selectRandomWorkspaceName();
                     String workspaceId = Utilities.generateRandomUUID();
-                    Date startDate = Utilities.generateStartDate();
-                    Date endDate = Utilities.generateEndDate(startDate);
+                    Instant startDate = Utilities.generateStartDate();
+                    Instant endDate = Utilities.generateEndDate(startDate);
                     WorkspaceMetadata workspaceMetadata = WorkspaceMetadata.builder()
                             .allowInternalSharing(true)
                             .limitToWorkspaceOnly(false)
@@ -93,59 +90,10 @@ public class WorkspaceService {
                             .workspaceName(workspaceName)
                             .status(WorkspaceStatus.ACTIVE)
                             .build();
-                    sampleData.add(workspace);
+
+                    workspaceRepository.save(workspace);
                 });
-        return sampleData;
     }
-
-    //        List<Workspace> sampleData = new ArrayList<>();
-
-//        for (int i = 0; i < numRecords; i++) {
-//            Random random = new Random();
-//            String randomLocationIsoCode = Utilities.getRandomLocCode();
-//            //TODO Clean-up names Use different list of names for clients
-//            String workspaceName = Utilities.generateSampleDescription();
-//            String workspaceId = Utilities.generateRandomUUID();
-//            Date startDate = Utilities.generateStartDate();
-//            Date endDate = Utilities.generateEndDate(startDate);
-//            WorkspaceMetadata workspaceMetadata = WorkspaceMetadata.builder()
-//                    .allowInternalSharing(true)
-//                    .limitToWorkspaceOnly(false)
-//                    .approval(false)
-//                    .apptioId("xx000")
-//                    .externalLimitData(false)
-//                    .systemOnly(false)
-//                    .wbsCode("15263")
-//                    .externalLimitSharing(false)
-//                    .domainLimitData(null)
-//                    .domainLimitSharing(null)
-//                    .searchable(true)
-//                    .visibility(true)
-//                    .build();
-
-//            List<WorkspaceUser> users = WorkspaceUserService.generateSampleWorkspaceUsers(random.nextInt(200) + 1);
-
-//            Workspace workspace = Workspace.builder()
-//                    .workspaceId(workspaceId)
-//                    .country(WorkspaceCountry.builder().countryCode(randomLocationIsoCode).countryName(randomLocationIsoCode).build())
-//                    .location(randomLocationIsoCode)
-//                    .tags(Utilities.generateRandomTagList())
-//                    .lineOfService(Utilities.selectRandomLineOfService())
-//                    .originatingSite(Utilities.selectRandomOriginatingSite())
-//                    .dataClassification(DataClassification.CONFIDENTIAL)
-//                    .dataConsentLevel(DataConsentLevel.CLIENT_ONLY)
-//                    .startDate(startDate)
-//                    .endDate(endDate)
-//                    .client(clientService.getRandomClient())
-//                    .version("WS-2.0")
-//                    .metadata(workspaceMetadata)
-//                    .workspaceType(selectRandomWorkspaceType())
-//                    .users(users)
-//                    .workspaceName(workspaceName)
-//                    .status(WorkspaceStatus.ACTIVE)
-//                    .build();
-//            sampleData.add(workspace);
-//        }
 
     public Workspace getRandomWorkspace() {
         Random random = new Random();

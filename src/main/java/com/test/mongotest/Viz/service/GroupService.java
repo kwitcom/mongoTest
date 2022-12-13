@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,7 +20,6 @@ public class GroupService {
     @Autowired
     GroupRepository groupRepository;
 
-    // Use the GroupRepository to get all groups
     public List<Group> allGroups(){
         return groupRepository.findAll();
     }
@@ -48,35 +46,29 @@ public class GroupService {
 
     public void loadSampleData() {
         int batchSize = 100; // Number of records to generate and save per batch
-        int numBatches = 20; // Number of batches to generate and save
+        int numBatches = 1; // Number of batches to generate and save
 
         for (int i = 0; i < numBatches; i++) {
-            List<Group> googleSample = generateSampleGroupMembership(batchSize, GroupType.GOOGLE);
-            mongoTemplate.insertAll(googleSample);
+            generateSampleGroupMembership(batchSize, GroupType.GOOGLE);
 
-            List<Group> externalSample = generateSampleGroupMembership(batchSize, GroupType.EXTERNAL_CONTACTS);
-            mongoTemplate.insertAll(externalSample);
+            generateSampleGroupMembership(batchSize, GroupType.EXTERNAL_CONTACTS);
 
         }
     }
 
-    private List<Group> generateSampleGroupMembership(int batchSize, GroupType groupType) {
-        List<Group> sampleData = new ArrayList<>();
-
+    private void generateSampleGroupMembership(int batchSize, GroupType groupType) {
         for (int i = 0; i < batchSize; i++) {
             Group group = Group.builder()
                     .groupType(groupType)
                     .memberList(com.test.mongotest.Viz.utils.Utilities.generateSampleGroupMembership(groupType))
                     .build();
-            sampleData.add(group);
+
+            groupRepository.save(group);
         }
-        return sampleData;
     }
 
     public Group getRandomGroup(){
         Random random = new Random();
-
-        // Use the GroupService instance to get all groups
         List<Group> allGroups = this.allGroups();
 
         // Generate a random index between 0 and the size of the list

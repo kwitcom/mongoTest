@@ -2,13 +2,13 @@ package com.test.mongotest.WorkspaceService.service;
 
 import com.test.mongotest.WorkspaceService.model.WorkspaceClient;
 import com.test.mongotest.WorkspaceService.repository.ClientRepository;
+import com.test.mongotest.model.ClientNames;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -24,28 +24,22 @@ public class ClientService {
     }
     public void loadSampleData() {
         int batchSize = 100; // Number of records to generate and save per batch
-        int numBatches = 1; // Number of batches to generate and save
+        int numBatches = 10; // Number of batches to generate and save
 
         for (int i = 0; i < numBatches; i++) {
-            List<WorkspaceClient> sampleData = generateSampleData(batchSize);
-            mongoTemplate.insertAll(sampleData);
+            generateSampleData(batchSize);
         }
     }
 
-    private List<WorkspaceClient> generateSampleData(int numRecords) {
-        List<WorkspaceClient> sampleData = new ArrayList<>();
-
+    private void generateSampleData(int numRecords) {
         for (int i = 0; i < numRecords; i++) {
-            String clientId = Utilities.generateRandomUUID();
-
             WorkspaceClient client = WorkspaceClient.builder()
-                    .clientId(clientId)
-                    .clientName(Utilities.generateRandomClientName())
+                    .clientId(Utilities.generateRandomUUID())
+                    .clientName(ClientNames.generateRandomClientName())
                     .source("MDM")
                     .build();
-            sampleData.add(client);
+            clientRepository.save(client);
         }
-        return sampleData;
     }
 
     public WorkspaceClient getRandomClient(){

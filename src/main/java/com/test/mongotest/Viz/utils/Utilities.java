@@ -7,6 +7,7 @@ import com.test.mongotest.Viz.model.asset.ApprovalStatus;
 import com.test.mongotest.Viz.model.asset.AssetType;
 import com.test.mongotest.Viz.model.group.GroupType;
 import com.test.mongotest.Viz.service.GroupService;
+import com.test.mongotest.model.Domains;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -25,8 +26,7 @@ public class Utilities {
         int count = random.nextInt(31);
         for (int n = 0; n < count; n++) {
 
-//            if (com.test.mongotest.utils.Utilities.generateRandomBoolean()) {
-                String randomEmail = com.test.mongotest.utils.Utilities.generateRandomEmail(com.test.mongotest.utils.Utilities.selectRandomDomain());
+                String randomEmail = com.test.mongotest.utils.Utilities.generateRandomEmail(Domains.selectRandomDomain());
                 Access reportAccess = Access.builder()
                         .accessRole(selectRandomAccessRole())
                         .email(randomEmail)
@@ -36,18 +36,6 @@ public class Utilities {
                         .approvalStatus(selectApprovalStatus())
                         .build();
                 accessList.add(reportAccess);
-//            } else {
-//                String randomGroup = groupService.getRandomGroup().getEmail();
-//                Access reportAccess = Access.builder()
-//                        .accessRole(selectRandomAccessRole())
-//                        .type("GROUP")
-//                        .email(randomGroup)
-//                        .fullName(randomGroup)
-//                        .approvalTrackingId(UUID.randomUUID().toString())
-//                        .approvalStatus(selectApprovalStatus())
-//                        .build();
-//                accessList.add(reportAccess);
-//            }
         }
         return accessList;
     }
@@ -64,7 +52,7 @@ public class Utilities {
             if (groupType == GroupType.GOOGLE) {
                 domainName = "pwc.com";
             } else {
-                domainName = com.test.mongotest.utils.Utilities.selectRandomDomain();
+                domainName = Domains.selectRandomDomain();
             }
             String randomEmail = com.test.mongotest.utils.Utilities.generateRandomEmail(domainName);
             Member member = Member.builder()

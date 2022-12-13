@@ -1,15 +1,17 @@
 package com.test.mongotest.Catalog.service;
 
 import com.test.mongotest.Catalog.model.CatalogAsset;
+import com.test.mongotest.Catalog.repository.CatalogAssetRepository;
 import com.test.mongotest.WorkspaceService.model.Workspace;
 import com.test.mongotest.WorkspaceService.service.WorkspaceService;
+import com.test.mongotest.model.LocationCodes;
+import com.test.mongotest.model.WordList;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -17,16 +19,17 @@ import java.util.List;
 public class CatalogService {
     @Autowired
     private MongoTemplate mongoTemplate;
-
     @Autowired
     private WorkspaceService workspaceService;
+    @Autowired
+    private CatalogAssetRepository catalogAssetRepository;
 
     public void createAndSaveCatalogAsset(CatalogAsset catalogAsset) {
         mongoTemplate.insert(catalogAsset);
     }
 
     public void loadSampleWorkspace() {
-        List<CatalogAsset> sampleData = new ArrayList<>();
+
         List<Workspace> workspaceList = workspaceService.allWorkspaces();
 
         workspaceList.forEach(ws -> {
@@ -39,35 +42,33 @@ public class CatalogService {
                     .description(ws.getWorkspaceName())
                     .resourceStatus("AVAILABLE")
                     .searchable(Utilities.generateRandomBoolean())
+                    .pwcTags(null)
+                    .deIdentified(false)
                     .build();
-            sampleData.add(asset);
-
+            catalogAssetRepository.save(asset);
         });
-        mongoTemplate.insertAll(sampleData);
+
     }
 
     public void loadSampleData() {
         int batchSize = 100; // Number of records to generate and save per batch
-        int numBatches = 5; // Number of batches to generate and save
+        int numBatches = 10; // Number of batches to generate and save
 
         for (int i = 0; i < numBatches; i++) {
-            List<CatalogAsset> sampleData = generateSampleData(batchSize);
-            mongoTemplate.insertAll(sampleData);
+            generateSampleData(batchSize);
         }
     }
 
-    private List<CatalogAsset> generateSampleData(int numRecords) {
-        List<CatalogAsset> sampleData = new ArrayList<>();
-
+    private void generateSampleData(int numRecords) {
         for (int i = 0; i < numRecords; i++) {
-            String randomLocationIsoCode = Utilities.getRandomLocCode();
-            String description = Utilities.generateSampleDescription();
+            String randomLocationIsoCode = LocationCodes.getRandomLocCode();
+            String description = WordList.generateSampleDescription();
             String randomId = Utilities.generateRandomUUID();
 
             CatalogAsset asset = CatalogAsset.builder()
                     .qualifiedName("asset " + i + " " + randomId)
                     .AssetId(randomId)
-                    .name("asset " + i + " " + randomId)
+                    .name(WordList.generateRandomAssetName())
                     .location(randomLocationIsoCode)
                     .territory(randomLocationIsoCode)
                     .description(description)
@@ -76,8 +77,7 @@ public class CatalogService {
                     .searchable(Utilities.generateRandomBoolean())
                     .pwcTags(Utilities.generateRandomTagList())
                     .build();
-            sampleData.add(asset);
+            catalogAssetRepository.save(asset);
         }
-        return sampleData;
     }
 }
