@@ -6,18 +6,19 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.Sharded;
 
 import java.util.List;
 
 @Data
 @Builder
 @Document(collection = "viz_assets")
-@Sharded(shardKey = {"location","assetId"})
+//@Sharded(shardKey = {"location","assetId"})
 public class AssetItem {
 
     @Id
     private String id;
+    @Field
+    private List<Access> accessList;
     @Indexed
     private String assetId;
     @Indexed
@@ -36,6 +37,5 @@ public class AssetItem {
     private String shareLink;
     private AccessRole sharedToAllInternalRole;
     private AccessRole externalContactsShareAccessRole;
-    @Field
-    private List<Access> accessList;
+
 }
