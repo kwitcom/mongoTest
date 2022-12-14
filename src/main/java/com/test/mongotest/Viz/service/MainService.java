@@ -1,5 +1,6 @@
 package com.test.mongotest.Viz.service;
 
+import com.mongodb.client.MongoDatabase;
 import com.test.mongotest.Viz.model.asset.MainObject;
 import com.test.mongotest.Viz.model.asset.SubObject;
 import com.test.mongotest.Viz.repository.MainRepository;
@@ -7,7 +8,9 @@ import com.test.mongotest.model.Domains;
 import com.test.mongotest.model.LocationCodes;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +23,22 @@ import java.util.Random;
 public class MainService {
     @Autowired
     private MongoTemplate mongoTemplate;
-
+    @Autowired
+    private MongoOperations mongoOperations;
     @Autowired
     private MainRepository mainRepository;
+
+    public void setupDB() {
+        MongoDatabase adminDB = mongoTemplate.getMongoDbFactory().getMongoDatabase("admin");
+
+        Document shardCmd = new Document("shardCollection", "glb-dev-test.test")
+                .append("key", new Document("location", 1).append("assetId", 1));
+
+        Document enableShardingCmd = new Document("enableSharding", "glb-dev-test");
+
+        adminDB.runCommand(shardCmd);
+        adminDB.runCommand(enableShardingCmd);
+    }
 
     public void loadSampleData(Integer batchSize, Integer numBatches) {
         for (int i = 0; i < numBatches; i++) {

@@ -116,5 +116,32 @@ public class Utilities {
         return instant;
     }
 
+    public static String generateRandomSize(){
+        Random random = new Random();
+
+        // Generate a random number between 0 and 1023
+        int sizeInBytes = random.nextInt(1024);
+
+        // Generate a random number between 0 and 3 to determine the unit of measurement
+        int unitIndex = random.nextInt(4);
+        String[] units = {"bytes", "KB", "MB", "GB"};
+        String selectedUnit = units[unitIndex];
+
+        // Multiply the size in bytes by the appropriate factor to convert it to the selected unit
+        double size = sizeInBytes;
+        if (selectedUnit == "KB") {
+            size = sizeInBytes / 1024.0;
+        } else if (selectedUnit == "MB") {
+            size = sizeInBytes / (1024.0 * 1024.0);
+        } else if (selectedUnit == "GB") {
+            size = sizeInBytes / (1024.0 * 1024.0 * 1024.0);
+        }
+
+        // Format the size as a string with the selected unit of measurement
+        String sizeString = String.format("%.2f %s", size, selectedUnit);
+
+        return sizeString;
+    }
+
 
 }

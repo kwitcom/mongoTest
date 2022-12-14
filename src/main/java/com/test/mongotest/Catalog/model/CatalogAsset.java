@@ -1,7 +1,6 @@
 package com.test.mongotest.Catalog.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.test.mongotest.model.OriginatingSite;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +13,7 @@ import java.util.List;
 @Data
 @Builder
 @Document(collection = "catalog_assets")
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CatalogAsset {
-
     @Indexed
     private String qualifiedName;
     private String AssetId;
@@ -40,7 +37,7 @@ public class CatalogAsset {
     private String accessRequestInstructions;
     private String previewInfo;
     private Boolean deIdentified;
-    private TypeFile typeFile;
+    private String typeFile;
     private TypeDatabase typeDatabase;
     private List<String> relations;
     private List<String> pwcTags;
@@ -66,6 +63,4 @@ public class CatalogAsset {
     private String classifications_isp_classification_level;
     private String demoAttr;
     private List<String> dynamicAttributes;
-
-
 }

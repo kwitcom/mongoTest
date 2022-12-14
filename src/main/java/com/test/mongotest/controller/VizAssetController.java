@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/viz/asset")
@@ -24,9 +23,9 @@ public class VizAssetController {
 
     @GetMapping("")
     List<AssetItem> getAssetsByUser(
-            @Parameter(name = "userEmail", description = "Email Address", in = ParameterIn.QUERY) Optional<String> userEmail
+            @Parameter(name = "userEmail", description = "Email Address", in = ParameterIn.QUERY) String userEmail
     ) {
-        return vizAssetService.findByEmail(String.valueOf(userEmail));
+        return vizAssetService.findByEmail(userEmail);
     }
 
     @GetMapping("/{assetId}")

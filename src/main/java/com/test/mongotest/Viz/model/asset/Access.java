@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @Builder
-@Document()
+@Document
 public class Access {
     @Field
     private String email;

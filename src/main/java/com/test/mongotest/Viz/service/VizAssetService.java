@@ -29,21 +29,15 @@ public class VizAssetService {
 
 
     public void setupDB() {
-//        //MongoDatabase adminDB = mongoOperations.getCollection("admin").getMongoDbFactory().getMongoDatabase("admin");
-//        MongoDatabase adminDB = mongoTemplate.getDb("admin");
+//        MongoDatabase adminDB = mongoTemplate.getMongoDbFactory().getMongoDatabase("admin");
 //
-//        // Check if sharding is enabled on the "glb-dev-test" database
-//        Document shardingState = adminDB.runCommand(new Document("sh.status()", 1));
+//        Document shardCmd = new Document("shardCollection", "glb-dev-test.viz_assets")
+//                .append("key", new Document("location", 1).append("assetId", 1));
 //
-//        if (!shardingState.getBoolean("enabled")) {
-//            // Enable sharding on the "glb-dev-test" database
-//            adminDB.runCommand(new Document("enableSharding", "glb-dev-test"));
+//        Document enableShardingCmd = new Document("enableSharding", "glb-dev-test");
 //
-//            // Shard the "viz_assets" collection
-//            Document shardCmd = new Document("shardCollection", "glb-dev-test.viz_assets")
-//                    .append("key", new Document("location", 1).append("assetId", 1));
-//            adminDB.runCommand(shardCmd);
-//        }
+//        adminDB.runCommand(shardCmd);
+//        adminDB.runCommand(enableShardingCmd);
     }
 
     public String save(AssetItem asset) {
