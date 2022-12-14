@@ -2,6 +2,7 @@ package com.test.mongotest.controller;
 
 import com.test.mongotest.Catalog.service.CatalogService;
 import com.test.mongotest.Viz.model.asset.MainObject;
+import com.test.mongotest.Viz.service.EmailModelService;
 import com.test.mongotest.Viz.service.GroupService;
 import com.test.mongotest.Viz.service.MainService;
 import com.test.mongotest.Viz.service.VizAssetService;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 @RequestMapping("/admin")
@@ -32,19 +35,44 @@ public class Admin {
     private VizAssetService vizAssetService;
     @Autowired
     private MainService mainService;
+    @Autowired
+    private EmailModelService emailModelService;
 
+    //        mainService.setupDB();
+//        mainService.loadSampleData(100, 1);
 
+//    @PostMapping("/loadSamples")
+//    public void loadSampleVizAssets() {
+//        emailModelService.loadSampleData(100, 1);
+//        clientService.loadSampleData(100, 1);
+//        workspaceService.loadSampleData(100, 1);
+//        catalogService.loadSampleWorkspace();
+//        groupService.loadSampleData(100,1);
+//        vizAssetService.loadSampleData(30, 1);
+//        catalogService.loadSampleData(100,1);
+//    }
     @PostMapping("/loadSamples")
     public void loadSampleVizAssets() {
+//        workspaceService.setupDB();
+//        vizAssetService.setupDB();
+//        catalogService.setupDB();
 
-        mainService.setupDB();
-//        mainService.loadSampleData(10, 1);
-//        clientService.loadSampleData(10, 1);
-//        workspaceService.loadSampleData(10, 1);
-//        catalogService.loadSampleWorkspace();
-//        groupService.loadSampleData(10,1);
-//        vizAssetService.loadSampleData(10, 1);
-//        catalogService.loadSampleData(10,1);
+        emailModelService.loadSampleData(100, 10);
+        clientService.loadSampleData(100, 10);
+        workspaceService.loadSampleData(100, 50);
+
+
+        // Create a fixed thread pool with the number of threads equal to the number of submethods
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+
+        // Submit the submethods to the executor to be run in parallel
+//        executor.submit(() -> catalogService.loadSampleWorkspace());
+//        executor.submit(() -> groupService.loadSampleData(100,1));
+        executor.submit(() -> vizAssetService.loadSampleData(30, 500));
+        executor.submit(() -> catalogService.loadSampleData(100,100));
+
+        // Shut down the executor
+        executor.shutdown();
     }
 
     @GetMapping("/")

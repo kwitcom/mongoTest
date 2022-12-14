@@ -1,20 +1,29 @@
 package com.test.mongotest.Viz.utils;
 
 import com.test.mongotest.Viz.model.Member;
-import com.test.mongotest.Viz.model.asset.*;
+import com.test.mongotest.Viz.model.asset.Access;
+import com.test.mongotest.Viz.model.asset.AccessRole;
+import com.test.mongotest.Viz.model.asset.ApprovalStatus;
+import com.test.mongotest.Viz.model.asset.AssetType;
 import com.test.mongotest.Viz.model.group.GroupType;
+import com.test.mongotest.Viz.repository.EmailModelRepository;
 import com.test.mongotest.Viz.service.GroupService;
 import com.test.mongotest.model.Domains;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-
+@Slf4j
+@Service
 public class Utilities {
     @Autowired
     private static GroupService groupService;
+    @Autowired
+    private EmailModelRepository emailModelRepository;
 
-    public static List<Access> generateSampleAccessList() {
+    public List<Access> generateSampleAccessList() {
         List<Access>  accessList = new ArrayList<>();
         // Create a Random object to generate random numbers
         Random random = new Random();
@@ -23,7 +32,7 @@ public class Utilities {
         int count = random.nextInt(31);
         for (int n = 0; n < count; n++) {
 
-                String randomEmail = com.test.mongotest.utils.Utilities.generateRandomEmail(Domains.selectRandomDomain());
+                String randomEmail = emailModelRepository.findByEmailAddressEndsWith("").getEmailAddress();
                 Access reportAccess = Access.builder()
                         .accessRole(selectRandomAccessRole())
                         .email(randomEmail)
@@ -38,7 +47,7 @@ public class Utilities {
     }
 
 
-    public static List<Member> generateSampleGroupMembership(GroupType groupType) {
+    public List<Member> generateSampleGroupMembership(GroupType groupType) {
         List<Member> Members = new ArrayList<>();
         Random random = new Random();
 
@@ -51,7 +60,7 @@ public class Utilities {
             } else {
                 domainName = Domains.selectRandomDomain();
             }
-            String randomEmail = com.test.mongotest.utils.Utilities.generateRandomEmail(domainName);
+            String randomEmail = emailModelRepository.findByEmailAddressEndsWith(domainName).getEmailAddress();
             Member member = Member.builder()
                     .email(randomEmail)
                     .fullName(randomEmail)

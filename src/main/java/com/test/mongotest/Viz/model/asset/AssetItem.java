@@ -3,16 +3,19 @@ package com.test.mongotest.Viz.model.asset;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.Sharded;
 
 import java.util.List;
 
 @Data
 @Builder
 @Document(collection = "viz_assets")
-//@Sharded(shardKey = {"location","assetId"})
+@CompoundIndex(def = "{'location': 1, 'assetId': 1}")
+@Sharded(shardKey = {"location", "assetId"}, immutableKey = true)
 public class AssetItem {
 
     @Id

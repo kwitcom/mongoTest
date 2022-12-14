@@ -1,5 +1,6 @@
 package com.test.mongotest.Catalog.service;
 
+import com.mongodb.client.MongoDatabase;
 import com.test.mongotest.Catalog.model.CatalogAsset;
 import com.test.mongotest.Catalog.model.TypeDatabase;
 import com.test.mongotest.Catalog.repository.CatalogAssetRepository;
@@ -10,6 +11,7 @@ import com.test.mongotest.model.TypeFile;
 import com.test.mongotest.model.WordList;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -27,9 +30,17 @@ public class CatalogService {
     private WorkspaceService workspaceService;
     @Autowired
     private CatalogAssetRepository catalogAssetRepository;
+    public void setupDB() {
+        MongoDatabase adminDB = mongoTemplate.getMongoDbFactory().getMongoDatabase("admin");
+
+        Document shardCmd = new Document("shardCollection", "glb-dev-test.catalog_assets")
+                .append("key", new Document("location", 1).append("assetId", 1));
+
+        adminDB.runCommand(shardCmd);
+    }
 
     public void createAndSaveCatalogAsset(CatalogAsset catalogAsset) {
-        mongoTemplate.insert(catalogAsset);
+        catalogAssetRepository.save(catalogAsset);
     }
 
     public void loadSampleWorkspace() {
@@ -39,7 +50,7 @@ public class CatalogService {
         workspaceList.parallelStream().forEach(ws -> {
             CatalogAsset asset = CatalogAsset.builder()
                     .qualifiedName("https://workbench-us.pwclabs.pwcglb.com/" + ws.getWorkspaceId() + "/")
-                    .AssetId(ws.getWorkspaceId())
+                    .assetId(ws.getWorkspaceId())
                     .name(ws.getWorkspaceName())
                     .location(ws.getLocation())
                     .territory(ws.getLocation())
@@ -53,7 +64,6 @@ public class CatalogService {
         });
     }
 
-
     public void loadSampleData(Integer batchSize, Integer numBatches) {
         for (int i = 0; i < numBatches; i++) {
             generateSampleData(batchSize);
@@ -61,41 +71,44 @@ public class CatalogService {
     }
 
     private void generateSampleData(int numRecords) {
-        for (int i = 0; i < numRecords; i++) {
-            String randomLocationIsoCode = LocationCodes.getRandomLocCode();
-            String description = WordList.generateSampleDescription();
-            String randomId = Utilities.generateRandomUUID();
-            Workspace workspace = workspaceService.getRandomWorkspace();
+        IntStream.range(0, numRecords)
+                // Use parallel stream to process the elements in parallel
+                .parallel()
+                // For each integer in the stream, generate a sample email model and save it
+                .forEach(i -> {
+                    String randomLocationIsoCode = LocationCodes.getRandomLocCode();
+                    String description = WordList.generateSampleDescription();
+                    String randomId = Utilities.generateRandomUUID();
+                    Workspace workspace = workspaceService.getRandomWorkspace();
 
-            CatalogAsset asset = CatalogAsset.builder()
-                    .qualifiedName(WordList.generateRandomAssetName())
-                    .AssetId(randomId)
-                    .name(WordList.generateRandomAssetName())
-                    .location(randomLocationIsoCode)
-                    .territory(randomLocationIsoCode)
-                    .description(description)
-                    .resourceStatus("AVAILABLE")
-                    .deIdentified(Utilities.generateRandomBoolean())
-                    .searchable(Utilities.generateRandomBoolean())
-                    .pwcTags(Utilities.generateRandomTagList())
-                    .accessRequestUrl(WordList.generateSampleDescription())
-                    .accessRequestInstructions(WordList.generateSampleDescription())
-                    .previewInfo(WordList.generateSampleDescription())
-                    .typeFile(TypeFile.selectRandomExtension())
-                    .dataCopyright(WordList.generateSampleDescription())
-                    .typeDatabase(new TypeDatabase())
-                    .size(Utilities.generateRandomSize())
-                    .clientName(workspace.getClient().getClientName())
-                    .workspaceId(workspace.getWorkspaceId())
-                    .workspaceName(workspace.getWorkspaceName())
-                    .additionalReferencesUrl(WordList.generateSampleDescription())
-                    .additionalReferencesLabel(WordList.generateSampleDescription())
-                    .relations(buildRandomRelationshipList())
-                    .build();
-            catalogAssetRepository.save(asset);
-        }
+                    CatalogAsset asset = CatalogAsset.builder()
+                            .qualifiedName(WordList.generateRandomAssetName())
+                            .assetId(randomId)
+                            .name(WordList.generateRandomAssetName())
+                            .location(randomLocationIsoCode)
+                            .territory(randomLocationIsoCode)
+                            .description(description)
+                            .resourceStatus("AVAILABLE")
+                            .deIdentified(Utilities.generateRandomBoolean())
+                            .searchable(Utilities.generateRandomBoolean())
+                            .pwcTags(Utilities.generateRandomTagList())
+                            .accessRequestUrl(WordList.generateSampleDescription())
+                            .accessRequestInstructions(WordList.generateSampleDescription())
+                            .previewInfo(WordList.generateSampleDescription())
+                            .typeFile(TypeFile.selectRandomExtension())
+                            .dataCopyright(WordList.generateSampleDescription())
+                            .typeDatabase(new TypeDatabase())
+                            .size(Utilities.generateRandomSize())
+                            .clientName(workspace.getClient().getClientName())
+                            .workspaceId(workspace.getWorkspaceId())
+                            .workspaceName(workspace.getWorkspaceName())
+                            .additionalReferencesUrl(WordList.generateSampleDescription())
+                            .additionalReferencesLabel(WordList.generateSampleDescription())
+                            .relations(buildRandomRelationshipList())
+                            .build();
+                    catalogAssetRepository.save(asset);
+                });
     }
-
 
     private List<String> buildRandomRelationshipList() {
         List<String> relationships = new ArrayList<>();
@@ -112,6 +125,4 @@ public class CatalogService {
         }
         return relationships;
     }
-
-
 }

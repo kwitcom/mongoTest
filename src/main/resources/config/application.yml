@@ -1,3 +1,6 @@
+server:
+  port: ${PORT:7091}
+
 spring:
   application:
     name: 'mongo-test'

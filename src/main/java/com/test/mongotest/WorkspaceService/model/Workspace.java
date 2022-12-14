@@ -1,14 +1,15 @@
 package com.test.mongotest.WorkspaceService.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.test.mongotest.model.LineOfService;
 import com.test.mongotest.model.OriginatingSite;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Sharded;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,7 +17,8 @@ import java.util.List;
 @Data
 @Builder
 @Document(collection = "workspaces")
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@CompoundIndex(def = "{'location': 1, 'workspaceId': 1}")
+@Sharded(shardKey = {"location", "workspaceId"}, immutableKey = true)
 public class Workspace {
     @Id
     private String _id;

@@ -3,24 +3,25 @@ package com.test.mongotest.Viz.service;
 import com.test.mongotest.Viz.model.group.Group;
 import com.test.mongotest.Viz.model.group.GroupType;
 import com.test.mongotest.Viz.repository.GroupRepository;
+import com.test.mongotest.Viz.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Random;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
 public class GroupService {
-
     @Autowired
-    private MongoTemplate mongoTemplate;
+    private GroupRepository groupRepository;
     @Autowired
-    GroupRepository groupRepository;
+    private EmailModelService emailModelService;
+    @Autowired
+    private Utilities util;
 
-    public List<Group> allGroups(){
+    public List<Group> allGroups() {
         return groupRepository.findAll();
     }
 
@@ -47,33 +48,24 @@ public class GroupService {
     public void loadSampleData(Integer batchSize, Integer numBatches) {
         for (int i = 0; i < numBatches; i++) {
             generateSampleGroupMembership(batchSize, GroupType.GOOGLE);
-
             generateSampleGroupMembership(batchSize, GroupType.EXTERNAL_CONTACTS);
-
         }
     }
-
     private void generateSampleGroupMembership(int batchSize, GroupType groupType) {
-        for (int i = 0; i < batchSize; i++) {
-            Group group = Group.builder()
-                    .groupType(groupType)
-                    .memberList(com.test.mongotest.Viz.utils.Utilities.generateSampleGroupMembership(groupType))
-                    .build();
-
-            groupRepository.save(group);
-        }
+        IntStream.range(0, batchSize)
+                // Use parallel stream to process the elements in parallel
+                .parallel()
+                // For each integer in the stream, generate a sample email model and save it
+                .forEach(i -> {
+                    Group group = Group.builder()
+                            .groupType(groupType)
+                            .memberList(util.generateSampleGroupMembership(groupType))
+                            .build();
+                    groupRepository.save(group);
+                });
     }
 
-    public Group getRandomGroup(){
-        Random random = new Random();
-        List<Group> allGroups = this.allGroups();
-
-        // Generate a random index between 0 and the size of the list
-        int randomIndex = random.nextInt(allGroups.size());
-
-        // Get the group at the random index
-        Group randomGroup = allGroups.get(randomIndex);
-
-        return randomGroup;
+    public Group getRandomGroup() {
+        return groupRepository.selectSampleRecord();
     }
 }

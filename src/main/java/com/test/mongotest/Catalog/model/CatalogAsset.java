@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.test.mongotest.model.OriginatingSite;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Sharded;
 
 import java.time.Instant;
 import java.util.List;
@@ -13,10 +15,12 @@ import java.util.List;
 @Data
 @Builder
 @Document(collection = "catalog_assets")
+@CompoundIndex(def = "{'location': 1, 'assetId': 1}")
+@Sharded(shardKey = {"location", "assetId"}, immutableKey = true)
 public class CatalogAsset {
     @Indexed
     private String qualifiedName;
-    private String AssetId;
+    private String assetId;
     private String name;
     private String description;
     private String userDescription;

@@ -1,11 +1,13 @@
 package com.test.mongotest.WorkspaceService.service;
 
+import com.mongodb.client.MongoDatabase;
 import com.test.mongotest.WorkspaceService.model.*;
 import com.test.mongotest.WorkspaceService.repository.WorkspaceRepository;
 import com.test.mongotest.model.LocationCodes;
 import com.test.mongotest.model.WorkspaceNameSamples;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
@@ -20,15 +22,21 @@ import java.util.stream.IntStream;
 public class WorkspaceService {
     @Autowired
     private MongoTemplate mongoTemplate;
-
     @Autowired
     private WorkspaceRepository workspaceRepository;
-
     @Autowired
     private ClientService clientService;
-
     @Autowired
     private WorkspaceUserService workspaceUserService;
+
+    public void setupDB() {
+        MongoDatabase adminDB = mongoTemplate.getMongoDbFactory().getMongoDatabase("admin");
+
+        Document shardCmd = new Document("shardCollection", "glb-dev-test.workspaces")
+                .append("key", new Document("location", 1).append("workspaceId", 1));
+
+        adminDB.runCommand(shardCmd);
+    }
 
     public List<Workspace> allWorkspaces() {
         return workspaceRepository.findAll();
@@ -41,7 +49,6 @@ public class WorkspaceService {
     }
 
     private void generateWorkspaces(int numRecords) {
-        // Generate the Workspace objects and add them to the list
         IntStream.range(0, numRecords)
                 .parallel()
                 .forEach(i -> {
@@ -66,7 +73,7 @@ public class WorkspaceService {
                             .visibility(true)
                             .build();
 
-                    List<WorkspaceUser> users = WorkspaceUserService.generateSampleWorkspaceUsers(random.nextInt(200) + 1);
+                    List<WorkspaceUser> users = workspaceUserService.generateSampleWorkspaceUsers(random.nextInt(20) + 1);
 
                     Workspace workspace = Workspace.builder()
                             .workspaceId(workspaceId)
