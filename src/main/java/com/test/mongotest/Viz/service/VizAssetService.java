@@ -85,18 +85,20 @@ public class VizAssetService {
         return assetRepository.findAssetItemByAssetId(assetId);
     }
 
-    public List<AssetItem> findByEmail(String email,int pageNumber, int pageSize) {
-//        return assetRepository.getAssetsByUser(email);
+    public List<AssetItem> findByEmailPaged(String email,int pageNumber, int pageSize) {
         //TODO: This is not currently working need to troubleshoot
-        Sort sort = Sort.by(Sort.Direction.DESC, "assetId");
+        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
         PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
         Page<AssetItem> page = assetRepository.findByAccessListEmail(request, email);
-
-        return page.getContent();
+        List<AssetItem> list = page.getContent();
+        return list;
+    }
+    public List<AssetItem> findByEmail(String email) {
+        return assetRepository.findByAccessListEmail(email);
     }
     public List<AssetItem> findAssetItemsBySharedToAllInternalRole(int pageNumber, int pageSize) {
 
-        Sort sort = Sort.by(Sort.Direction.DESC, "assetId");
+        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
         PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
         Page<AssetItem> page = assetRepository.findAssetItemsBySharedToAllInternalRole(request);
 

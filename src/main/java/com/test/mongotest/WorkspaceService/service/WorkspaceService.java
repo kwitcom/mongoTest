@@ -4,6 +4,7 @@ import com.mongodb.client.MongoDatabase;
 import com.test.mongotest.WorkspaceService.model.*;
 import com.test.mongotest.WorkspaceService.repository.WorkspaceRepository;
 import com.test.mongotest.model.LocationCodes;
+import com.test.mongotest.model.OriginatingSite;
 import com.test.mongotest.model.WorkspaceNameSamples;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
@@ -124,5 +125,33 @@ public class WorkspaceService {
         int index = random.nextInt(values.length);
         return values[index];
 
+    }
+
+    public List<Workspace> findByTagsIn(List<String> tags) {
+        return workspaceRepository.findByTagsIn(tags);
+    }
+
+    public List<Workspace> findByMetadataWbsCode(String wbscode) {
+        return workspaceRepository.findByMetadataWbsCode(wbscode);
+    }
+
+    public List<Workspace> findByUsersEmail(String email) {
+        return workspaceRepository.findByUsersEmail(email);
+    }
+
+    public List<Workspace> findByClientClientIdAndDataConsentLevel(String clientId, DataConsentLevel dataConsentLevel) {
+        return workspaceRepository.findByClientClientIdAndDataConsentLevel(clientId, dataConsentLevel);
+    }
+
+    public List<Workspace> findByOriginatingSite(OriginatingSite originatingSite) {
+        return workspaceRepository.findByOriginatingSite(originatingSite);
+    }
+
+    public List<Workspace> findByClientClientId(String clientId) {
+        return workspaceRepository.findByClientClientId(clientId);
+    }
+
+    public Workspace findByWorkspaceId(String workspaceId) {
+        return workspaceRepository.findByWorkspaceId(workspaceId);
     }
 }

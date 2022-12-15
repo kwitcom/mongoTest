@@ -125,4 +125,8 @@ public class CatalogService {
         }
         return relationships;
     }
+
+    public List<CatalogAsset> search1(){
+        return catalogAssetRepository.test3();
+    }
 }

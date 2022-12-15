@@ -1,7 +1,6 @@
 package com.test.mongotest.WorkspaceService.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -10,7 +9,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Data
-@Builder@JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
 public class WorkspaceUser {
     private String userType;
     @Indexed

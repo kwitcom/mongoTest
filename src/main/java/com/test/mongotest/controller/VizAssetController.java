@@ -20,12 +20,18 @@ public class VizAssetController {
 
 
     @GetMapping("")
-    List<AssetItem> getAssetsByUser(
+    List<AssetItem> findByEmailPaged(
             @RequestParam(name = "userEmail", defaultValue = "a43@aliceinwonderland.com") String userEmail,
             @RequestParam(name = "Page Number", defaultValue = "1") Integer pageNumber,
             @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize
     ) {
-        return vizAssetService.findByEmail(userEmail,pageNumber,pageSize);
+        return vizAssetService.findByEmailPaged(userEmail,pageNumber,pageSize);
+    }
+    @GetMapping("")
+    List<AssetItem> findByEmail(
+            @RequestParam(name = "userEmail", defaultValue = "a43@aliceinwonderland.com") String userEmail
+    ) {
+        return vizAssetService.findByEmail(userEmail);
     }
 
     @GetMapping("/{assetId}")

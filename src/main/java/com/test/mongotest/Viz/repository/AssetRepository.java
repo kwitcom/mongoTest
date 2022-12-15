@@ -12,13 +12,22 @@ import java.util.List;
 @Repository
 public interface AssetRepository extends MongoRepository<AssetItem, String> {
     AssetItem findAssetItemByAssetId(String assetId);
+
     // Recommended way
-    Page<AssetItem> findByAccessListEmail(Pageable pageable,String email);
+    Page<AssetItem> findByAccessListEmail(Pageable pageable, String email);
+
+    List<AssetItem> findByAccessListEmail(String email);
+
+    List<AssetItem> findByDescriptionContains(String fuzzy);
+
     List<AssetItem> findByWorkspaceId(String workspaceId);
+
     // Backup way
     @Query(value = "{'accessList.email': ?0}")
     List<AssetItem> getAssetsByUser(String email);
+
     @Query(value = "{ 'sharedToAllInternalRole' : { $ne : 'NONE' } }")
     Page<AssetItem> findAssetItemsBySharedToAllInternalRole(Pageable pageable);
-    //TODO: If email is of (x Domain and externalContactsShareAccessRole is something other than 'NONE') or is in accessList return in array
+
+    //TODO: If email is of (x Domain and sharedToAllInternalRole is something other than 'NONE') or is in accessList return in array
 }
