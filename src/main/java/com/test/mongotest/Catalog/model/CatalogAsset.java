@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Sharded;
 
 import java.time.Instant;
@@ -25,6 +26,7 @@ public class CatalogAsset {
     private String description;
     private String userDescription;
     private String owner;
+    @Field
     private List<CatalogAssetTypeName> typeName;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX", timezone = "Z")
     private Instant createTime;
@@ -44,6 +46,7 @@ public class CatalogAsset {
     private String typeFile;
     private TypeDatabase typeDatabase;
     private List<String> relations;
+    @Field
     private List<String> pwcTags;
     private String size;
     private String extension;

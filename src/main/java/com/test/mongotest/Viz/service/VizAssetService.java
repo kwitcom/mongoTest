@@ -105,6 +105,13 @@ public class VizAssetService {
         return page.getContent();
     }
 
+    public List<AssetItem> findAll(int pageNumber, int pageSize) {
 
+        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
+        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        Page<AssetItem> page = assetRepository.findAll(request);
+
+        return page.getContent();
+    }
 
 }

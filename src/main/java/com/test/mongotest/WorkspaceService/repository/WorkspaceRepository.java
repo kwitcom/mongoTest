@@ -28,6 +28,7 @@ public interface WorkspaceRepository extends MongoRepository<Workspace, String> 
     List<Workspace> findByTagsIn(List<String> tags);
 
     List<Workspace> findByClientClientIdAndDataConsentLevel(String clientId, DataConsentLevel dataConsentLevel);
+    List<Workspace> findByClientClientIdAndCountryCountryCode(String clientId, String Country);
 
     //TODO: Support filter by Tags
     //TODO: Filter by text by items in WorkspaceMetadata

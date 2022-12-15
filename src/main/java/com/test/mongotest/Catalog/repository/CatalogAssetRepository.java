@@ -1,9 +1,10 @@
 package com.test.mongotest.Catalog.repository;
 
 import com.test.mongotest.Catalog.model.CatalogAsset;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,14 +25,17 @@ public interface CatalogAssetRepository extends MongoRepository<CatalogAsset, St
     List<CatalogAsset> findByAssetId(String assetId);
 
     List<CatalogAsset> findByWorkspaceIdAndTypeFile(String workspaceId, String typeFile);
+    Page<CatalogAsset> findBySearchableIsTrue(Pageable pageable);
 
-    @Aggregation(pipeline = "{}",value = "{}")
-    @Query(value = "{}", fields = "{}")
-    List<CatalogAsset> test();
+    List<CatalogAsset> findByPwcTags(List<String> tags);
 
-
-    @Aggregation(pipeline = {"{$search: {index: 'default',text: {query: 'Franchise',path: {'wildcard': '*'}}}}"})
-    List<CatalogAsset> test3();
+//    @Aggregation(pipeline = "{}",value = "{}")
+//    @Query(value = "{}", fields = "{}")
+//    List<CatalogAsset> test();
+//
+//
+//    @Aggregation(pipeline = {"{$search: {index: 'default',text: {query: 'Franchise',path: {'wildcard': '*'}}}}"})
+//    List<CatalogAsset> test3();
 
     //TODO: Need to to filter searches based on searchable is true
     //TODO: Need to be able to search by Tags

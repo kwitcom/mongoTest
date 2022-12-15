@@ -19,7 +19,7 @@ public class VizAssetController {
     }
 
 
-    @GetMapping("")
+    @GetMapping("/findByEmailPaged")
     List<AssetItem> findByEmailPaged(
             @RequestParam(name = "userEmail", defaultValue = "a43@aliceinwonderland.com") String userEmail,
             @RequestParam(name = "Page Number", defaultValue = "1") Integer pageNumber,
@@ -27,7 +27,7 @@ public class VizAssetController {
     ) {
         return vizAssetService.findByEmailPaged(userEmail,pageNumber,pageSize);
     }
-    @GetMapping("")
+    @GetMapping("/findByEmail")
     List<AssetItem> findByEmail(
             @RequestParam(name = "userEmail", defaultValue = "a43@aliceinwonderland.com") String userEmail
     ) {
@@ -45,6 +45,15 @@ public class VizAssetController {
             @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize
     ){
         List<AssetItem> assetItems = vizAssetService.findAssetItemsBySharedToAllInternalRole(pageNumber, pageSize);
+        return assetItems;
+    }
+
+    @GetMapping("/findAll")
+    List<AssetItem> findAll(
+            @RequestParam(name = "Page Number", defaultValue = "1") Integer pageNumber,
+            @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize
+    ){
+        List<AssetItem> assetItems = vizAssetService.findAll(pageNumber, pageSize);
         return assetItems;
     }
 }

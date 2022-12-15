@@ -13,6 +13,9 @@ import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
@@ -126,7 +129,48 @@ public class CatalogService {
         return relationships;
     }
 
-    public List<CatalogAsset> search1(){
-        return catalogAssetRepository.test3();
+    public List<CatalogAsset> findBySearchableIsTrue(int pageNumber, int pageSize) {
+
+        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
+        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        Page<CatalogAsset> page = catalogAssetRepository.findBySearchableIsTrue(request);
+
+        return page.getContent();
     }
+
+//    public List<CatalogAsset> search1(){
+//        return catalogAssetRepository.test3();
+//    }
+
+//
+//
+//    // NOTE: Catalog Search doesn't have tags only workspace - query below is to execute atlas search by tags in workspace
+//    private static void searchTags(MongoCollection<Document> workspaces){
+//        SearchPath path = SearchPath.fieldPath("tags");
+//        String query = "accountings"; // <-- typo!
+//        SearchOperator operator = SearchOperator.text(path, query).fuzzy(FuzzySearchOptions.fuzzySearchOptions().maxEdits(2));
+//        // Options, what goes outside $text
+//        SearchOptions options = SearchOptions.searchOptions()
+//                .index("default");
+//        Bson textSearch = Aggregates.search(operator, options);
+//        catalog_assets.aggregate(Arrays.asList(textSearch)).forEach(doc -> System.out.println(doc.toJson()));
+//    }
+//    //TODO: Need to be able to search by atlas search on description
+//    // NOTE: Note sure where you'll put the below code for search query
+//    private static void searchDescription(MongoCollection<Document> catalog_assets){
+//        SearchPath path = SearchPath.fieldPath("description");
+//        String query = "Productvty"; // <-- typo!
+//        SearchOperator operator = SearchOperator.text(path, query).fuzzy(FuzzySearchOptions.fuzzySearchOptions().maxEdits(2));
+//        // Options, what goes outside $text
+//        SearchOptions options = SearchOptions.searchOptions()
+//                .index("default");
+//        Bson textSearch = Aggregates.search(operator, options);
+//        catalog_assets.aggregate(Arrays.asList(textSearch)).forEach(doc -> System.out.println(doc.toJson()));
+//    }
+//
+//    //TODO: Need list of access that are for single workspace, then all for the sample client if searchable is true and any other details user provides
+//    // NOTE: Need to execute queries from workspace collection since it has client & searchable fields
+//    @Query(value = "{client.clientName = 'Goldman Sachs : QRSTUVWXYZ'}")
+//    @Query(value = "{client.clientName = 'Goldman Sachs : QRSTUVWXYZ', metadata.searchable = true}", fields = "{ 'client.clientName' : 1, 'metadata.searchable' : 1}")
+
 }

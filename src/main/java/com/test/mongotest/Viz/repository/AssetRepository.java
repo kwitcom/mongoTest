@@ -13,7 +13,7 @@ import java.util.List;
 public interface AssetRepository extends MongoRepository<AssetItem, String> {
     AssetItem findAssetItemByAssetId(String assetId);
 
-    // Recommended way
+    @Query(value = "{'accessList.email': ?1}")
     Page<AssetItem> findByAccessListEmail(Pageable pageable, String email);
 
     List<AssetItem> findByAccessListEmail(String email);
@@ -25,6 +25,8 @@ public interface AssetRepository extends MongoRepository<AssetItem, String> {
     // Backup way
     @Query(value = "{'accessList.email': ?0}")
     List<AssetItem> getAssetsByUser(String email);
+
+    Page<AssetItem> findAll(Pageable pageable);
 
     @Query(value = "{ 'sharedToAllInternalRole' : { $ne : 'NONE' } }")
     Page<AssetItem> findAssetItemsBySharedToAllInternalRole(Pageable pageable);
