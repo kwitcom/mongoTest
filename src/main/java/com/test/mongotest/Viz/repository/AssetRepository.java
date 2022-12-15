@@ -14,6 +14,10 @@ public interface AssetRepository extends MongoRepository<AssetItem, String> {
     // Recommended way
     List<AssetItem> findByAccessListEmail(String email);
 
+    List<AssetItem> findByWorkspaceId(String workspaceId);
+
+    //TODO: If email is of (x Domain and externalContactsShareAccessRole is something other than 'NONE') or is in accessList return in array
+
     // Backup way
     @Query(value = "{'accessList.email': ?0}")
     List<AssetItem> getAssetsByUser(String email);
