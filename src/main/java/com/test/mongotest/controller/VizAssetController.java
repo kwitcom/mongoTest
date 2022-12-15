@@ -2,8 +2,6 @@ package com.test.mongotest.controller;
 
 import com.test.mongotest.Viz.model.asset.AssetItem;
 import com.test.mongotest.Viz.service.VizAssetService;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +21,11 @@ public class VizAssetController {
 
     @GetMapping("")
     List<AssetItem> getAssetsByUser(
-            @Parameter(name = "userEmail", description = "Email Address", in = ParameterIn.QUERY) String userEmail
+            @RequestParam(name = "userEmail", defaultValue = "a43@aliceinwonderland.com") String userEmail,
+            @RequestParam(name = "Page Number", defaultValue = "1") Integer pageNumber,
+            @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize
     ) {
-        return vizAssetService.findByEmail(userEmail);
+        return vizAssetService.findByEmail(userEmail,pageNumber,pageSize);
     }
 
     @GetMapping("/{assetId}")
@@ -38,7 +38,7 @@ public class VizAssetController {
             @RequestParam(name = "Page Number", defaultValue = "1") Integer pageNumber,
             @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize
     ){
-        List<AssetItem> assetItems = vizAssetService.getAssetItemsBySharedToAllInternalRoleNotNONE(pageNumber, pageSize);
+        List<AssetItem> assetItems = vizAssetService.findAssetItemsBySharedToAllInternalRole(pageNumber, pageSize);
         return assetItems;
     }
 }

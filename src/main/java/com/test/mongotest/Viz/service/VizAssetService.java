@@ -85,20 +85,21 @@ public class VizAssetService {
         return assetRepository.findAssetItemByAssetId(assetId);
     }
 
-    public List<AssetItem> findByEmail(String email) {
-        return assetRepository.findByAccessListEmail(email);
-    }
-    public List<AssetItem> getAssetItemsBySharedToAllInternalRoleNotNONE(int pageNumber, int pageSize) {
-        // Use the Sort.by factory method to create a new Sort object
+    public List<AssetItem> findByEmail(String email,int pageNumber, int pageSize) {
+//        return assetRepository.getAssetsByUser(email);
+        //TODO: This is not currently working need to troubleshoot
         Sort sort = Sort.by(Sort.Direction.DESC, "assetId");
-        // Use the PageRequest.of factory method to create a new PageRequest object
-        // Use the pageNumber and pageSize arguments to specify the desired page and page size
         PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        Page<AssetItem> page = assetRepository.findByAccessListEmail(request, email);
 
-        // Use the PageRequest object when calling the repository's getAssetItemsBySharedToAllInternalRole method
-        Page<AssetItem> page = assetRepository.getAssetItemsBySharedToAllInternalRole(request);
+        return page.getContent();
+    }
+    public List<AssetItem> findAssetItemsBySharedToAllInternalRole(int pageNumber, int pageSize) {
 
-        // Return the list of items from the page
+        Sort sort = Sort.by(Sort.Direction.DESC, "assetId");
+        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        Page<AssetItem> page = assetRepository.findAssetItemsBySharedToAllInternalRole(request);
+
         return page.getContent();
     }
 

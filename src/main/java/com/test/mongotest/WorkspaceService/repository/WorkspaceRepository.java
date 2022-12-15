@@ -19,6 +19,7 @@ public interface WorkspaceRepository extends MongoRepository<Workspace, String> 
     //TODO: Support filter by Tags
     //TODO: Advance search by items in WorkspaceMetadata
     //TODO: Search by clientId and dataConsentLevel
+    //TODO: All that could return a list should be updated to support paging
 
 
 }
