@@ -1,4 +1,5 @@
 package com.test.mongotest.Viz.model.asset;
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

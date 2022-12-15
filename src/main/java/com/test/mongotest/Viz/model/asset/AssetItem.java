@@ -38,7 +38,9 @@ public class AssetItem {
     private Boolean isVisible;
     private Boolean isShared;
     private String shareLink;
+    @Field
     private AccessRole sharedToAllInternalRole;
+    @Field
     private AccessRole externalContactsShareAccessRole;
 
 }

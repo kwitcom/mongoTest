@@ -10,6 +10,9 @@ import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
@@ -85,4 +88,20 @@ public class VizAssetService {
     public List<AssetItem> findByEmail(String email) {
         return assetRepository.findByAccessListEmail(email);
     }
+    public List<AssetItem> getAssetItemsBySharedToAllInternalRoleNotNONE(int pageNumber, int pageSize) {
+        // Use the Sort.by factory method to create a new Sort object
+        Sort sort = Sort.by(Sort.Direction.DESC, "assetId");
+        // Use the PageRequest.of factory method to create a new PageRequest object
+        // Use the pageNumber and pageSize arguments to specify the desired page and page size
+        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+
+        // Use the PageRequest object when calling the repository's getAssetItemsBySharedToAllInternalRole method
+        Page<AssetItem> page = assetRepository.getAssetItemsBySharedToAllInternalRole(request);
+
+        // Return the list of items from the page
+        return page.getContent();
+    }
+
+
+
 }

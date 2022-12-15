@@ -33,4 +33,12 @@ public class VizAssetController {
         return vizAssetService.findAssetItemByAssetId(assetId);
     }
 
+    @GetMapping("/AllInternal")
+    List<AssetItem> getAssetItemsBySharedToAllInternalRoleNotNONE(
+            @RequestParam(name = "Page Number", defaultValue = "1") Integer pageNumber,
+            @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize
+    ){
+        List<AssetItem> assetItems = vizAssetService.getAssetItemsBySharedToAllInternalRoleNotNONE(pageNumber, pageSize);
+        return assetItems;
+    }
 }
