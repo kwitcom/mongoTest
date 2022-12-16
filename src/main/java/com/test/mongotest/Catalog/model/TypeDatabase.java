@@ -3,11 +3,13 @@ package com.test.mongotest.Catalog.model;
 import com.test.mongotest.model.LocationCodes;
 import com.test.mongotest.model.WordList;
 import com.test.mongotest.utils.Utilities;
+import lombok.Data;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+@Data
 public class TypeDatabase {
     private String databaseType;
     private String connectionString;

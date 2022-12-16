@@ -1,6 +1,7 @@
 package com.test.mongotest.WorkspaceService.service;
 
 import com.mongodb.client.MongoDatabase;
+import com.test.mongotest.Viz.model.asset.AssetItem;
 import com.test.mongotest.WorkspaceService.model.*;
 import com.test.mongotest.WorkspaceService.repository.WorkspaceRepository;
 import com.test.mongotest.model.LocationCodes;
@@ -10,6 +11,9 @@ import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +35,7 @@ public class WorkspaceService {
     private WorkspaceUserService workspaceUserService;
 
     public void setupDB() {
-        MongoDatabase adminDB = mongoTemplate.getMongoDbFactory().getMongoDatabase("admin");
+        MongoDatabase adminDB = mongoTemplate.getMongoDatabaseFactory().getMongoDatabase("admin");
 
         Document shardCmd = new Document("shardCollection", "glb-dev-test.workspaces")
                 .append("key", new Document("location", 1).append("workspaceId", 1));
@@ -127,28 +131,42 @@ public class WorkspaceService {
 
     }
 
-    public List<Workspace> findByTagsIn(List<String> tags) {
-        return workspaceRepository.findByTagsIn(tags);
+    public Page<Workspace> findByTagsIn(List<String> tags, int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
+        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+
+        return workspaceRepository.findByTagsIn(tags, request);
     }
 
-    public List<Workspace> findByMetadataWbsCode(String wbscode) {
-        return workspaceRepository.findByMetadataWbsCode(wbscode);
+    public Page<Workspace> findByMetadataWbsCode(String wbscode, int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
+        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        return workspaceRepository.findByMetadataWbsCode(wbscode, request);
     }
 
-    public List<Workspace> findByUsersEmail(String email) {
-        return workspaceRepository.findByUsersEmail(email);
+    public Page<Workspace> findByUsersEmail(String email, int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
+        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        return workspaceRepository.findByUsersEmail(email, request);
     }
 
-    public List<Workspace> findByClientClientIdAndDataConsentLevel(String clientId, DataConsentLevel dataConsentLevel) {
-        return workspaceRepository.findByClientClientIdAndDataConsentLevel(clientId, dataConsentLevel);
+    public Page<Workspace> findByClientClientIdAndDataConsentLevel(String clientId,
+                                                                   DataConsentLevel dataConsentLevel, int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
+        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        return workspaceRepository.findByClientClientIdAndDataConsentLevel(clientId, dataConsentLevel, request);
     }
 
-    public List<Workspace> findByOriginatingSite(OriginatingSite originatingSite) {
-        return workspaceRepository.findByOriginatingSite(originatingSite);
+    public Page<Workspace> findByOriginatingSite(OriginatingSite originatingSite, int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
+        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        return workspaceRepository.findByOriginatingSite(originatingSite, request);
     }
 
-    public List<Workspace> findByClientClientId(String clientId) {
-        return workspaceRepository.findByClientClientId(clientId);
+    public Page<Workspace> findByClientClientId(String clientId, int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
+        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        return workspaceRepository.findByClientClientId(clientId, request);
     }
 
     public Workspace findByWorkspaceId(String workspaceId) {

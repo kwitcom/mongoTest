@@ -4,6 +4,8 @@ package com.test.mongotest.WorkspaceService.repository;
 import com.test.mongotest.WorkspaceService.model.DataConsentLevel;
 import com.test.mongotest.WorkspaceService.model.Workspace;
 import com.test.mongotest.model.OriginatingSite;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,22 +15,22 @@ import java.util.List;
 public interface WorkspaceRepository extends MongoRepository<Workspace, String> {
     Workspace findByWorkspaceId(String workspaceId);
 
-    List<Workspace> findByClientClientId(String clientId);
+    Page<Workspace> findByClientClientId(String clientId, Pageable pageable);
 
-    List<Workspace> findByOriginatingSite(OriginatingSite originatingSite);
+    Page<Workspace> findByOriginatingSite(OriginatingSite originatingSite, Pageable pageable);
 
-    List<Workspace> findByCountryCountryCode(String countryCode);
+    Page<Workspace> findByCountryCountryCode(String countryCode, Pageable pageable);
 
-    List<Workspace> findByUsersUserId(String userId);
+    Page<Workspace> findByUsersUserId(String userId, Pageable pageable);
 
-    List<Workspace> findByUsersEmail(String email);
+    Page<Workspace> findByUsersEmail(String email, Pageable pageable);
 
-    List<Workspace> findByMetadataWbsCode(String wbscode);
+    Page<Workspace> findByMetadataWbsCode(String wbscode, Pageable pageable);
 
-    List<Workspace> findByTagsIn(List<String> tags);
+    Page<Workspace> findByTagsIn(List<String> tags, Pageable pageable);
 
-    List<Workspace> findByClientClientIdAndDataConsentLevel(String clientId, DataConsentLevel dataConsentLevel);
-    List<Workspace> findByClientClientIdAndCountryCountryCode(String clientId, String Country);
+    Page<Workspace> findByClientClientIdAndDataConsentLevel(String clientId, DataConsentLevel dataConsentLevel, Pageable pageable);
+    Page<Workspace> findByClientClientIdAndCountryCountryCode(String clientId, String Country, Pageable pageable);
 
     //TODO: Support filter by Tags
     //TODO: Filter by text by items in WorkspaceMetadata

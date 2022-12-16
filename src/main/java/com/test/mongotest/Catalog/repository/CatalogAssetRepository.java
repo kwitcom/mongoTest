@@ -18,24 +18,17 @@ public interface CatalogAssetRepository extends MongoRepository<CatalogAsset, St
     @Aggregation(value = "{ $sample: { size: 1.0 } }")
     CatalogAsset selectSampleRecord();
 
-    List<CatalogAsset> findByWorkspaceId(String workspaceId);
+    Page<CatalogAsset> findByWorkspaceId(String workspaceId, Pageable pageable);
 
-    List<CatalogAsset> findByClientId(String clientId);
+    Page<CatalogAsset> findByClientId(String clientId, Pageable pageable);
 
-    List<CatalogAsset> findByAssetId(String assetId);
+    Page<CatalogAsset> findByAssetId(String assetId, Pageable pageable);
 
-    List<CatalogAsset> findByWorkspaceIdAndTypeFile(String workspaceId, String typeFile);
+    Page<CatalogAsset> findByWorkspaceIdAndTypeFile(String workspaceId, String typeFile, Pageable pageable);
     Page<CatalogAsset> findBySearchableIsTrue(Pageable pageable);
 
-    List<CatalogAsset> findByPwcTags(List<String> tags);
-
-//    @Aggregation(pipeline = "{}",value = "{}")
-//    @Query(value = "{}", fields = "{}")
-//    List<CatalogAsset> test();
-//
-//
-//    @Aggregation(pipeline = {"{$search: {index: 'default',text: {query: 'Franchise',path: {'wildcard': '*'}}}}"})
-//    List<CatalogAsset> test3();
+    Page<CatalogAsset> findByPwcTags(List<String> tags, Pageable pageable);
+    Page<CatalogAsset> findByLocation(String location, Pageable pageable);
 
     //TODO: Need to to filter searches based on searchable is true
     //TODO: Need to be able to search by Tags

@@ -7,7 +7,6 @@ import com.test.mongotest.Viz.model.asset.ApprovalStatus;
 import com.test.mongotest.Viz.model.asset.AssetType;
 import com.test.mongotest.Viz.model.group.GroupType;
 import com.test.mongotest.Viz.repository.EmailModelRepository;
-import com.test.mongotest.Viz.service.GroupService;
 import com.test.mongotest.model.Domains;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import java.util.*;
 @Slf4j
 @Service
 public class Utilities {
-    @Autowired
-    private static GroupService groupService;
     @Autowired
     private EmailModelRepository emailModelRepository;
 

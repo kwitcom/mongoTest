@@ -13,10 +13,10 @@ import java.util.List;
 public interface AssetRepository extends MongoRepository<AssetItem, String> {
     AssetItem findAssetItemByAssetId(String assetId);
 
-    @Query(value = "{'accessList.email': ?1}")
-    Page<AssetItem> findByAccessListEmail(Pageable pageable, String email);
+//    @Query(value = "{'accessList.email': ?1}")
+    Page<AssetItem> findByAccessListEmail(String email, Pageable pageable);
 
-    List<AssetItem> findByAccessListEmail(String email);
+//    List<AssetItem> findByAccessListEmail(String email);
 
     List<AssetItem> findByDescriptionContains(String fuzzy);
 

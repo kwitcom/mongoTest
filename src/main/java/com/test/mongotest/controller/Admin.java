@@ -53,23 +53,22 @@ public class Admin {
 //    }
     @PostMapping("/loadSamples")
     public void loadSampleVizAssets() {
-//        workspaceService.setupDB();
-//        vizAssetService.setupDB();
-//        catalogService.setupDB();
+        workspaceService.setupDB();
+        vizAssetService.setupDB();
+        catalogService.setupDB();
 
-        emailModelService.loadSampleData(100, 10);
-        clientService.loadSampleData(100, 10);
-        workspaceService.loadSampleData(100, 50);
-
+        emailModelService.loadSampleData(100, 1);
+        clientService.loadSampleData(100, 1);
+        workspaceService.loadSampleData(100, 1);
 
         // Create a fixed thread pool with the number of threads equal to the number of submethods
-        ExecutorService executor = Executors.newFixedThreadPool(3);
+        ExecutorService executor = Executors.newFixedThreadPool(4);
 
         // Submit the submethods to the executor to be run in parallel
-//        executor.submit(() -> catalogService.loadSampleWorkspace());
-//        executor.submit(() -> groupService.loadSampleData(100,1));
-        executor.submit(() -> vizAssetService.loadSampleData(30, 500));
-        executor.submit(() -> catalogService.loadSampleData(100,100));
+        executor.submit(() -> catalogService.loadSampleWorkspace());
+        executor.submit(() -> groupService.loadSampleData(100,1));
+        executor.submit(() -> vizAssetService.loadSampleData(30,1 ));
+        executor.submit(() -> catalogService.loadSampleData(100,1));
 
         // Shut down the executor
         executor.shutdown();

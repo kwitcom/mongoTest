@@ -28,7 +28,7 @@ public class MainService {
     private EmailModelRepository emailModelRepository;
 
     public void setupDB() {
-        MongoDatabase adminDB = mongoTemplate.getMongoDbFactory().getMongoDatabase("admin");
+        MongoDatabase adminDB =mongoTemplate.getMongoDatabaseFactory().getMongoDatabase("admin");
 
         Document shardCmd = new Document("shardCollection", "glb-dev-test.test")
                 .append("key", new Document("location", 1).append("assetId", 1));

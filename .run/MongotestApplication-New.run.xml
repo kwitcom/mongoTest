@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MongotestApplication-New" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="mongotest" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.test.mongotest.MongotestApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

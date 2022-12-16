@@ -32,7 +32,7 @@ public class VizAssetService {
     private com.test.mongotest.Viz.utils.Utilities util;
 
     public void setupDB() {
-        MongoDatabase adminDB = mongoTemplate.getMongoDbFactory().getMongoDatabase("admin");
+        MongoDatabase adminDB = mongoTemplate.getMongoDatabaseFactory().getMongoDatabase("admin");
 
         Document shardCmd = new Document("shardCollection", "glb-dev-test.viz_assets")
                 .append("key", new Document("location", 1).append("assetId", 1));
@@ -85,33 +85,29 @@ public class VizAssetService {
         return assetRepository.findAssetItemByAssetId(assetId);
     }
 
-    public List<AssetItem> findByEmailPaged(String email,int pageNumber, int pageSize) {
+    public Page<AssetItem> findByEmailPaged(String email,int pageNumber, int pageSize) {
         //TODO: This is not currently working need to troubleshoot
         Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
         PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
-        Page<AssetItem> page = assetRepository.findByAccessListEmail(request, email);
-        List<AssetItem> list = page.getContent();
-        return list;
+        return assetRepository.findByAccessListEmail(email, request);
     }
-    public List<AssetItem> findByEmail(String email) {
-        return assetRepository.findByAccessListEmail(email);
-    }
-    public List<AssetItem> findAssetItemsBySharedToAllInternalRole(int pageNumber, int pageSize) {
+//    public List<AssetItem> findByEmail(String email) {
+//        return assetRepository.findByAccessListEmail2(email);
+//    }
+    public Page<AssetItem> findAssetItemsBySharedToAllInternalRole(int pageNumber, int pageSize) {
 
         Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
         PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
-        Page<AssetItem> page = assetRepository.findAssetItemsBySharedToAllInternalRole(request);
 
-        return page.getContent();
+        return assetRepository.findAssetItemsBySharedToAllInternalRole(request);
     }
 
-    public List<AssetItem> findAll(int pageNumber, int pageSize) {
+    public Page<AssetItem> findAll(int pageNumber, int pageSize) {
 
         Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
         PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
-        Page<AssetItem> page = assetRepository.findAll(request);
 
-        return page.getContent();
+        return assetRepository.findAll(request);
     }
 
 }

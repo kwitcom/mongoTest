@@ -3,6 +3,7 @@ package com.test.mongotest.controller;
 import com.test.mongotest.Viz.model.asset.AssetItem;
 import com.test.mongotest.Viz.service.VizAssetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,19 +21,19 @@ public class VizAssetController {
 
 
     @GetMapping("/findByEmailPaged")
-    List<AssetItem> findByEmailPaged(
+    Page<AssetItem> findByEmailPaged(
             @RequestParam(name = "userEmail", defaultValue = "a43@aliceinwonderland.com") String userEmail,
-            @RequestParam(name = "Page Number", defaultValue = "1") Integer pageNumber,
+            @RequestParam(name = "Page Number: Starting 0", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize
     ) {
         return vizAssetService.findByEmailPaged(userEmail,pageNumber,pageSize);
     }
-    @GetMapping("/findByEmail")
-    List<AssetItem> findByEmail(
-            @RequestParam(name = "userEmail", defaultValue = "a43@aliceinwonderland.com") String userEmail
-    ) {
-        return vizAssetService.findByEmail(userEmail);
-    }
+//    @GetMapping("/findByEmail")
+//    List<AssetItem> findByEmail(
+//            @RequestParam(name = "userEmail", defaultValue = "a43@aliceinwonderland.com") String userEmail
+//    ) {
+//        return vizAssetService.findByEmail(userEmail);
+//    }
 
     @GetMapping("/{assetId}")
     AssetItem getAssetById(@PathVariable final String assetId){
@@ -40,20 +41,20 @@ public class VizAssetController {
     }
 
     @GetMapping("/AllInternal")
-    List<AssetItem> getAssetItemsBySharedToAllInternalRoleNotNONE(
-            @RequestParam(name = "Page Number", defaultValue = "1") Integer pageNumber,
+    Page<AssetItem> getAssetItemsBySharedToAllInternalRoleNotNONE(
+            @RequestParam(name = "Page Number: Starting 0", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize
     ){
-        List<AssetItem> assetItems = vizAssetService.findAssetItemsBySharedToAllInternalRole(pageNumber, pageSize);
+        Page <AssetItem> assetItems = vizAssetService.findAssetItemsBySharedToAllInternalRole(pageNumber, pageSize);
         return assetItems;
     }
 
     @GetMapping("/findAll")
-    List<AssetItem> findAll(
-            @RequestParam(name = "Page Number", defaultValue = "1") Integer pageNumber,
+    Page<AssetItem> findAll(
+            @RequestParam(name = "Page Number: Starting 0", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize
     ){
-        List<AssetItem> assetItems = vizAssetService.findAll(pageNumber, pageSize);
+        Page<AssetItem> assetItems = vizAssetService.findAll(pageNumber, pageSize);
         return assetItems;
     }
 }
