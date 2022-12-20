@@ -1,14 +1,13 @@
 package com.test.mongotest.controller;
 
+import com.mongodb.client.AggregateIterable;
 import com.test.mongotest.Catalog.model.CatalogAsset;
 import com.test.mongotest.Catalog.service.CatalogService;
 import com.test.mongotest.WorkspaceService.model.Workspace;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class CatalogController {
         return catalogService.findByClientId(clientId, pageNumber, pageSize);
     }
 
-    @GetMapping("/findByClientId")
+    @GetMapping("/findByLocation")
     Page<CatalogAsset> findByLocation(
             @RequestParam(name = "Page Number: Starting 0", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize,
@@ -54,5 +53,20 @@ public class CatalogController {
     ) {
         return catalogService.findByLocation(location, pageNumber, pageSize);
     }
+
+    @GetMapping("/search1")
+    AggregateIterable<Document> search1() {
+        return catalogService.search1();
+    }
+
+    @GetMapping("/search2")
+    Page<Document> search2(
+            @RequestParam(name = "Page Number: Starting 0", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "Page Size", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "Search String", defaultValue = "Productivity") String query
+    ) {
+        return catalogService.search2(query, pageNumber, pageSize);
+    }
+
 }
 

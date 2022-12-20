@@ -1,6 +1,10 @@
 package com.test.mongotest.Catalog.service;
 
+import com.mongodb.client.model.*;
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Aggregates;
 import com.test.mongotest.Catalog.model.CatalogAsset;
 import com.test.mongotest.Catalog.model.TypeDatabase;
 import com.test.mongotest.Catalog.repository.CatalogAssetRepository;
@@ -12,16 +16,20 @@ import com.test.mongotest.model.WordList;
 import com.test.mongotest.utils.Utilities;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.json.JsonWriterSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 @Slf4j
@@ -132,8 +140,7 @@ public class CatalogService {
 
     public Page<CatalogAsset> findBySearchableIsTrue(int pageNumber, int pageSize) {
 
-        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
-        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        PageRequest request = PageRequest.of(pageNumber, pageSize);
 
         return catalogAssetRepository.findBySearchableIsTrue(request);
     }
@@ -148,24 +155,62 @@ public class CatalogService {
 
     public Page<CatalogAsset> findByWorkspaceId(String workspaceId, int pageNumber, int pageSize) {
 
-        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
-        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        PageRequest request = PageRequest.of(pageNumber, pageSize);
 
         return catalogAssetRepository.findByWorkspaceId(workspaceId, request);
     }
 
     public Page<CatalogAsset> findByPwcTags(List<String> tags, int pageNumber, int pageSize) {
 
-        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
-        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        PageRequest request = PageRequest.of(pageNumber, pageSize);
 
         return catalogAssetRepository.findByPwcTags(tags, request);
     }
+
     public Page<CatalogAsset> findByLocation(String location, int pageNumber, int pageSize) {
 
-        Sort sort = Sort.by(Sort.Direction.ASC, "assetId");
-        PageRequest request = PageRequest.of(pageNumber, pageSize, sort);
+        PageRequest request = PageRequest.of(pageNumber, pageSize);
 
         return catalogAssetRepository.findByLocation(location, request);
     }
+
+    public AggregateIterable<Document> search1() {
+        Document query = new Document("$search",
+                new Document("index", "default")
+                        .append("text",
+                                new Document("query", "Productivity")
+                                        .append("path", Arrays.asList("name", "description"))
+                                        .append("fuzzy",
+                                                new Document("maxEdits", 2L))));
+        MongoCollection<Document> catalogAssets = mongoTemplate.getCollection("catalog_assets");
+
+        return catalogAssets.aggregate(List.of(query));
+    }
+
+    public Page<Document> search2(String searchTerm, int page, int size) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("name").regex(searchTerm, "i")
+                .orOperator(Criteria.where("description").regex(searchTerm, "i")));
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+        List<Document> documents = mongoTemplate.find(query.with(pageRequest), Document.class, "catalog_assets");
+        return new PageImpl<>(documents, pageRequest, documents.size());
+    }
+
+
+    private Consumer<Document> printDocuments() {
+        return doc -> System.out.println(doc.toJson(JsonWriterSettings.builder().indent(true).build()));
+    }
+
+    private Collection<Document> searchCatalogTest1(MongoCollection<Document> catalogCollection) {
+        Collection<Document> result = catalogCollection.aggregate(Arrays.asList(new Document("$search",
+                new Document("index", "default")
+                        .append("text",
+                                new Document("query", "Productivity")
+                                        .append("path", Arrays.asList("name", "description"))
+                                        .append("fuzzy",
+                                                new Document("maxEdits", 2L)))))).into(new ArrayList<>());
+        return result;
+    }
+
 }

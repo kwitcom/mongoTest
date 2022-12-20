@@ -25,10 +25,14 @@ public interface CatalogAssetRepository extends MongoRepository<CatalogAsset, St
     Page<CatalogAsset> findByAssetId(String assetId, Pageable pageable);
 
     Page<CatalogAsset> findByWorkspaceIdAndTypeFile(String workspaceId, String typeFile, Pageable pageable);
+
     Page<CatalogAsset> findBySearchableIsTrue(Pageable pageable);
 
     Page<CatalogAsset> findByPwcTags(List<String> tags, Pageable pageable);
+
     Page<CatalogAsset> findByLocation(String location, Pageable pageable);
+
+    List<CatalogAsset> searchCatalogAssetByNameOrDescription(String query);
 
     //TODO: Need to to filter searches based on searchable is true
     //TODO: Need to be able to search by Tags
